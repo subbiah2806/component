@@ -50,9 +50,21 @@ import { ComponentProvider, ErrorBoundary } from '@subbiah/component';
 
 ### 3. Use Components
 
+**IMPORTANT**: Import directly from component files, NOT from a barrel index file.
+
 ```tsx
-import { Button, Card, Input, Badge } from '@subbiah/component';
-import { IconLoading, IconError } from '@subbiah/component';
+// UI Components
+import { Button } from '@subbiah/component/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@subbiah/component/components/ui/card';
+import { Input } from '@subbiah/component/components/ui/input';
+import { Badge } from '@subbiah/component/components/ui/badge';
+
+// Utility Components
+import DataFetchWrapper from '@subbiah/component/components/DataFetchWrapper';
+import BackgroundGradient from '@subbiah/component/components/BackgroundGradient';
+
+// Icons
+import { IconLoading, IconError } from '@subbiah/component/components/icons';
 
 function MyComponent() {
   return (
@@ -71,7 +83,9 @@ function MyComponent() {
 ### 4. Use Context Hooks
 
 ```tsx
-import { useThemeContext, useCursorContext, useAudioContext } from '@subbiah/component';
+import { useThemeContext } from '@subbiah/component/contexts/ThemeContext';
+import { useCursorContext } from '@subbiah/component/contexts/CursorContext';
+import { useAudioContext } from '@subbiah/component/contexts/AudioContext';
 
 function MyComponent() {
   const { isDark, toggleTheme } = useThemeContext();
@@ -79,6 +93,16 @@ function MyComponent() {
   const { isMuted, toggleMute } = useAudioContext();
 
   return <div>Theme is {isDark ? 'dark' : 'light'}</div>;
+}
+```
+
+### 5. Use Utilities
+
+```tsx
+import { cn } from '@subbiah/component/lib/utils';
+
+function MyComponent() {
+  return <div className={cn('base-class', someCondition && 'conditional-class')}>Content</div>;
 }
 ```
 
