@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { AudioProvider } from '../contexts/AudioContext';
-import { CursorProvider } from '../contexts/CursorContext';
+import { ThemeProvider } from '../contexts/Theme/provider';
+import { AudioProvider } from '../contexts/Audio/provider';
+import { CursorProvider } from '../contexts/Cursor/provider';
 
 interface ComponentProviderProps {
   children: ReactNode;

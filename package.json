@@ -6,10 +6,7 @@
   "exports": {
     "./styles": "./src/styles/index.css",
     "./tailwind.config": "./tailwind.config.js",
-    "./components/*": "./src/components/*",
-    "./contexts/*": "./src/contexts/*",
-    "./providers/*": "./src/providers/*",
-    "./lib/*": "./src/lib/*"
+    "./*": "./src/*"
   },
   "files": [
     "src",
@@ -19,9 +16,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint . --ext .ts,.tsx",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
+    "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "19.2.0",
@@ -38,9 +33,10 @@
     "clsx": "2.1.1",
     "lucide-react": "0.546.0",
     "react-helmet-async": "2.0.5",
+    "react-hook-form": "7.65.0",
     "tailwind-merge": "3.3.1",
     "tailwindcss-animate": "1.0.7",
-    "react-hook-form": "7.65.0"
+    "@tailwindcss/typography": "0.5.19"
   },
   "devDependencies": {
     "@types/node": "24.8.1",

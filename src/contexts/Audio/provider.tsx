@@ -1,6 +1,5 @@
 import {
   createContext,
-  useContext,
   useState,
   useEffect,
   useRef,
@@ -15,12 +14,12 @@ declare global {
   }
 }
 
-interface AudioContextType {
+export interface AudioContextType {
   isMuted: boolean;
   toggleMute: () => void;
 }
 
-const AudioContext = createContext<AudioContextType | undefined>(undefined);
+export const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 interface AudioProviderProps {
   children: ReactNode;
@@ -106,12 +105,4 @@ export function AudioProvider({ children }: AudioProviderProps) {
   };
 
   return <AudioContext.Provider value={value}>{children}</AudioContext.Provider>;
-}
-
-export function useAudioContext() {
-  const context = useContext(AudioContext);
-  if (context === undefined) {
-    throw new Error('useAudioContext must be used within an AudioProvider');
-  }
-  return context;
 }

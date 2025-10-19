@@ -20,10 +20,7 @@ interface BackgroundGradientProps {
  * <BackgroundGradient orbCount={5} />
  * ```
  */
-export default function BackgroundGradient({
-  className,
-  orbCount = 3,
-}: BackgroundGradientProps) {
+export default function BackgroundGradient({ className, orbCount = 3 }: BackgroundGradientProps) {
   const orbColors = [
     'bg-primary/30',
     'bg-secondary/30',
@@ -32,14 +29,17 @@ export default function BackgroundGradient({
     'bg-warning/20',
   ];
 
-  const orbAnimations = ['animate-float-1', 'animate-float-2', 'animate-float-1', 'animate-float-2', 'animate-float-1'];
+  const orbAnimations = [
+    'animate-float-1',
+    'animate-float-2',
+    'animate-float-1',
+    'animate-float-2',
+    'animate-float-1',
+  ];
 
   return (
     <div
-      className={cn(
-        'pointer-events-none fixed inset-0 z-0 overflow-hidden',
-        className
-      )}
+      className={cn('pointer-events-none fixed inset-0 z-0 overflow-hidden', className)}
       aria-hidden="true"
     >
       {/* Gradient orbs */}

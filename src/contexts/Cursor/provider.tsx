@@ -1,12 +1,12 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 
-interface CursorContextType {
+export interface CursorContextType {
   isEnabled: boolean;
   toggleCursor: () => void;
   canUseCursor: boolean;
 }
 
-const CursorContext = createContext<CursorContextType | undefined>(undefined);
+export const CursorContext = createContext<CursorContextType | undefined>(undefined);
 
 interface CursorProviderProps {
   children: ReactNode;
@@ -68,12 +68,4 @@ export function CursorProvider({ children }: CursorProviderProps) {
   };
 
   return <CursorContext.Provider value={value}>{children}</CursorContext.Provider>;
-}
-
-export function useCursorContext() {
-  const context = useContext(CursorContext);
-  if (context === undefined) {
-    throw new Error('useCursorContext must be used within a CursorProvider');
-  }
-  return context;
 }

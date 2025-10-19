@@ -1,5 +1,5 @@
 import { MousePointer2, Circle } from 'lucide-react';
-import { useCursorContext } from '../contexts/CursorContext';
+import { useCursorContext } from '../contexts/Cursor';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
 

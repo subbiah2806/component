@@ -45,7 +45,7 @@ import { ComponentProvider, ErrorBoundary } from '@subbiah/component';
   <ComponentProvider>
     <App />
   </ComponentProvider>
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ### 3. Use Components
@@ -270,11 +270,7 @@ import { cn } from '@/lib/utils';
 
 const Alert = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('rounded-lg border bg-card p-4', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('bg-card rounded-lg border p-4', className)} {...props} />
   )
 );
 Alert.displayName = 'Alert';
@@ -325,7 +321,7 @@ export default {
   content: [
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
-    '../component/src/**/*.{js,ts,jsx,tsx}',
+    'nodemodules/@subbiah/component/src/**/*.{js,ts,jsx,tsx}',
   ],
   plugins: [...(baseConfig.plugins || [])],
 };
