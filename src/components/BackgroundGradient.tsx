@@ -20,23 +20,32 @@ interface BackgroundGradientProps {
  * <BackgroundGradient orbCount={5} />
  * ```
  */
+const orbColors = [
+  'bg-primary/30',
+  'bg-secondary/30',
+  'bg-primary/10',
+  'bg-success/20',
+  'bg-warning/20',
+];
+
+const orbAnimations = [
+  'animate-float-1',
+  'animate-float-2',
+  'animate-float-2',
+  'animate-float-2',
+  'animate-float-1',
+];
+
+const dimentions: Record<number, {}> = {
+  2: {
+    top: 10,
+    right: 0,
+    width: `300px`,
+    height: `300px`,
+  },
+};
+
 export default function BackgroundGradient({ className, orbCount = 3 }: BackgroundGradientProps) {
-  const orbColors = [
-    'bg-primary/30',
-    'bg-secondary/30',
-    'bg-accent/20',
-    'bg-success/20',
-    'bg-warning/20',
-  ];
-
-  const orbAnimations = [
-    'animate-float-1',
-    'animate-float-2',
-    'animate-float-1',
-    'animate-float-2',
-    'animate-float-1',
-  ];
-
   return (
     <div
       className={cn('pointer-events-none fixed inset-0 z-0 overflow-hidden', className)}
@@ -51,13 +60,15 @@ export default function BackgroundGradient({ className, orbCount = 3 }: Backgrou
             orbColors[index % orbColors.length],
             orbAnimations[index % orbAnimations.length]
           )}
-          style={{
-            width: `${300 + index * 50}px`,
-            height: `${300 + index * 50}px`,
-            top: `${10 + index * 20}%`,
-            left: `${10 + index * 15}%`,
-            opacity: 0.6 - index * 0.1,
-          }}
+          style={
+            dimentions[index] ?? {
+              width: `${300 + index * 50}px`,
+              height: `${300 + index * 50}px`,
+              top: `${10 + index * 20}%`,
+              left: `${10 + index * 15}%`,
+              opacity: 0.6 - index * 0.1,
+            }
+          }
         />
       ))}
     </div>
