@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import { ThemeProvider } from "./statefulComponents/theme/provider";
-import { AudioProvider } from "./statefulComponents/audio/provider";
-import { CursorProvider } from "./statefulComponents/cursor/provider";
-import "./styles/index.css";
+import { ReactNode } from 'react';
+import { ThemeProvider } from './statefulComponents/theme/provider';
+import { AudioProvider } from './statefulComponents/audio/provider';
+import { CursorProvider } from './statefulComponents/cursor/provider';
+import './styles/index.css';
 
 interface InitializeReusableChunksProps {
   children: ReactNode;
@@ -29,9 +29,7 @@ interface InitializeReusableChunksProps {
  * }
  * ```
  */
-export function InitializeReusableChunks({
-  children,
-}: InitializeReusableChunksProps) {
+export function InitializeReusableChunks({ children }: InitializeReusableChunksProps) {
   return (
     <ThemeProvider>
       <AudioProvider>

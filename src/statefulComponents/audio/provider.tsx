@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  ReactNode,
-} from 'react';
+import { createContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 
 // Extend Window interface to include webkitAudioContext
 declare global {

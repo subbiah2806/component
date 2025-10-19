@@ -31,7 +31,7 @@ npm link @subbiah/reusable
 Import the component library styles in your `main.tsx` or `index.tsx`:
 
 ```tsx
-import "@subbiah/reusable/styles";
+import '@subbiah/reusable/styles';
 ```
 
 ### 2. Wrap App with ComponentProvider
@@ -39,7 +39,7 @@ import "@subbiah/reusable/styles";
 The `ComponentProvider` includes all necessary context providers (Theme, Audio, Cursor):
 
 ```tsx
-import { ComponentProvider, ErrorBoundary } from "@subbiah/reusable";
+import { ComponentProvider, ErrorBoundary } from '@subbiah/reusable';
 
 <ErrorBoundary>
   <ComponentProvider>
@@ -54,22 +54,17 @@ import { ComponentProvider, ErrorBoundary } from "@subbiah/reusable";
 
 ```tsx
 // UI Components
-import { Button } from "@subbiah/reusable/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@subbiah/reusable/components/ui/card";
-import { Input } from "@subbiah/reusable/components/ui/input";
-import { Badge } from "@subbiah/reusable/components/ui/badge";
+import { Button } from '@subbiah/reusable/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@subbiah/reusable/components/ui/card';
+import { Input } from '@subbiah/reusable/components/ui/input';
+import { Badge } from '@subbiah/reusable/components/ui/badge';
 
 // Utility Components
-import DataFetchWrapper from "@subbiah/reusable/components/DataFetchWrapper";
-import BackgroundGradient from "@subbiah/reusable/components/BackgroundGradient";
+import DataFetchWrapper from '@subbiah/reusable/components/DataFetchWrapper';
+import BackgroundGradient from '@subbiah/reusable/components/BackgroundGradient';
 
 // Icons
-import { IconLoading, IconError } from "@subbiah/reusable/components/icons";
+import { IconLoading, IconError } from '@subbiah/reusable/components/icons';
 
 function MyComponent() {
   return (
@@ -88,30 +83,26 @@ function MyComponent() {
 ### 4. Use Context Hooks
 
 ```tsx
-import { useThemeContext } from "@subbiah/reusable/statefulComponents/theme/useState";
-import { useCursorContext } from "@subbiah/reusable/statefulComponents/cursor/useState";
-import { useAudioContext } from "@subbiah/reusable/statefulComponents/audio/useState";
+import { useThemeContext } from '@subbiah/reusable/statefulComponents/theme/useState';
+import { useCursorContext } from '@subbiah/reusable/statefulComponents/cursor/useState';
+import { useAudioContext } from '@subbiah/reusable/statefulComponents/audio/useState';
 
 function MyComponent() {
   const { isDark, toggleTheme } = useThemeContext();
   const { isEnabled, toggleCursor } = useCursorContext();
   const { isMuted, toggleMute } = useAudioContext();
 
-  return <div>Theme is {isDark ? "dark" : "light"}</div>;
+  return <div>Theme is {isDark ? 'dark' : 'light'}</div>;
 }
 ```
 
 ### 5. Use Utilities
 
 ```tsx
-import { cn } from "@subbiah/reusable/lib/utils";
+import { cn } from '@subbiah/reusable/lib/utils';
 
 function MyComponent() {
-  return (
-    <div className={cn("base-class", someCondition && "conditional-class")}>
-      Content
-    </div>
-  );
+  return <div className={cn('base-class', someCondition && 'conditional-class')}>Content</div>;
 }
 ```
 
@@ -240,21 +231,25 @@ Dark mode is managed by the `ThemeContext` and applies the `.dark` class to the 
 Stateful components are organized in `src/statefulComponents/`:
 
 ### Audio
+
 - `statefulComponents/audio/provider.tsx` - AudioProvider component
 - `statefulComponents/audio/useState.ts` - useAudioContext hook
 - `statefulComponents/audio/toggle.tsx` - AudioToggle component
 
 ### Cursor
+
 - `statefulComponents/cursor/provider.tsx` - CursorProvider component (renders custom cursor automatically)
 - `statefulComponents/cursor/useState.ts` - useCursorContext hook
 - `statefulComponents/cursor/toggle.tsx` - CursorToggle component
 
 ### Theme
+
 - `statefulComponents/theme/provider.tsx` - ThemeProvider component
 - `statefulComponents/theme/useState.ts` - useThemeContext hook
 - `statefulComponents/theme/toggle.tsx` - ThemeToggle component
 
 **Import Examples:**
+
 ```tsx
 // Providers
 import { AudioProvider } from '@subbiah/reusable/statefulComponents/audio/provider';
@@ -302,7 +297,7 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 // Usage - just wrap your app with CursorProvider
 <CursorProvider>
   <App />
-</CursorProvider>
+</CursorProvider>;
 
 // The custom cursor renders automatically when isEnabled is true
 // Use CursorToggle component to allow users to toggle it on/off
@@ -328,27 +323,22 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 
 ```tsx
 // src/components/ui/alert.tsx
-import * as React from "react";
-import { cn } from "../../lib/utils";
+import * as React from 'react';
+import { cn } from '../../lib/utils';
 
-const Alert = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("bg-card rounded-lg border p-4", className)}
-    {...props}
-  />
-));
-Alert.displayName = "Alert";
+const Alert = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('bg-card rounded-lg border p-4', className)} {...props} />
+  )
+);
+Alert.displayName = 'Alert';
 
 export { Alert };
 ```
 
 ```ts
 // src/index.ts
-export { Alert } from "./components/ui/alert";
+export { Alert } from './components/ui/alert';
 ```
 
 ## TypeScript Conventions
@@ -380,14 +370,14 @@ Projects should extend the component library's Tailwind config:
 
 ```js
 // tailwind.config.js
-import baseConfig from "@subbiah/reusable/tailwind.config";
+import baseConfig from '@subbiah/reusable/tailwind.config';
 
 export default {
   ...baseConfig,
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "nodemodules/@subbiah/reusable/src/**/*.{js,ts,jsx,tsx}",
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    'nodemodules/@subbiah/reusable/src/**/*.{js,ts,jsx,tsx}',
   ],
   plugins: [...(baseConfig.plugins || [])],
 };
@@ -409,7 +399,7 @@ export default {
 ### DataFetchWrapper Pattern
 
 ```tsx
-import { DataFetchWrapper } from "@subbiah/reusable";
+import { DataFetchWrapper } from '@subbiah/reusable';
 
 function MyComponent() {
   const [data, setData] = useState([]);
@@ -471,7 +461,7 @@ cd modules/portfolio && npm link @subbiah/reusable
 Ensure you're importing styles:
 
 ```tsx
-import "@subbiah/reusable/styles";
+import '@subbiah/reusable/styles';
 ```
 
 ### Type errors in icon components
