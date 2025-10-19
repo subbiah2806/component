@@ -274,7 +274,7 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 ```tsx
 // src/components/ui/alert.tsx
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 
 const Alert = React.forwardRef<
   HTMLDivElement,
