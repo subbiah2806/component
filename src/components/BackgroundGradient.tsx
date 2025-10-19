@@ -36,7 +36,7 @@ const orbAnimations = [
   'animate-float-1',
 ];
 
-const dimentions: Record<number, {}> = {
+const dimentions: Record<number, object> = {
   2: {
     top: 10,
     right: 0,
