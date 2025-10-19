@@ -6,7 +6,10 @@
   "exports": {
     "./styles": "./src/styles/index.css",
     "./tailwind.config": "./tailwind.config.js",
-    "./*": "./src/*"
+    "./components/*": "./src/components/*.tsx",
+    "./contexts/*": "./src/contexts/*/index.ts",
+    "./providers/*": "./src/providers/*.tsx",
+    "./lib/*": "./src/lib/*.ts"
   },
   "files": [
     "src",
