@@ -1,12 +1,5 @@
-import { createContext, useState, useEffect, useRef, ReactNode } from 'react';
-
-export interface CursorContextType {
-  isEnabled: boolean;
-  toggleCursor: () => void;
-  canUseCursor: boolean;
-}
-
-export const CursorContext = createContext<CursorContextType | undefined>(undefined);
+import { useState, useEffect, useRef, ReactNode } from 'react';
+import { CursorContext, CursorContextType } from './context';
 
 interface CursorProviderProps {
   children: ReactNode;

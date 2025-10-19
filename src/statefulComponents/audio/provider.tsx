@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
+import { useState, useEffect, useRef, useCallback, ReactNode } from 'react';
+import { AudioContext, AudioContextType } from './context';
 
 // Extend Window interface to include webkitAudioContext
 declare global {
@@ -6,13 +7,6 @@ declare global {
     webkitAudioContext: typeof AudioContext;
   }
 }
-
-export interface AudioContextType {
-  isMuted: boolean;
-  toggleMute: () => void;
-}
-
-export const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 interface AudioProviderProps {
   children: ReactNode;

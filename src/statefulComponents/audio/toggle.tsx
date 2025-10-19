@@ -1,5 +1,5 @@
 import { Volume2, VolumeX } from 'lucide-react';
-import { useAudioContext } from './useState';
+import { useAudioContext } from './context';
 import { Button } from '../../components/ui/button';
 import { cn } from '../../lib/utils';
 
