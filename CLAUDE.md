@@ -31,7 +31,7 @@ npm link @subbiah/component
 Import the component library styles in your `main.tsx` or `index.tsx`:
 
 ```tsx
-import '@subbiah/component/styles';
+import "@subbiah/component/styles";
 ```
 
 ### 2. Wrap App with ComponentProvider
@@ -39,7 +39,7 @@ import '@subbiah/component/styles';
 The `ComponentProvider` includes all necessary context providers (Theme, Audio, Cursor):
 
 ```tsx
-import { ComponentProvider, ErrorBoundary } from '@subbiah/component';
+import { ComponentProvider, ErrorBoundary } from "@subbiah/component";
 
 <ErrorBoundary>
   <ComponentProvider>
@@ -54,17 +54,22 @@ import { ComponentProvider, ErrorBoundary } from '@subbiah/component';
 
 ```tsx
 // UI Components
-import { Button } from '@subbiah/component/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@subbiah/component/components/ui/card';
-import { Input } from '@subbiah/component/components/ui/input';
-import { Badge } from '@subbiah/component/components/ui/badge';
+import { Button } from "@subbiah/component/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@subbiah/component/components/ui/card";
+import { Input } from "@subbiah/component/components/ui/input";
+import { Badge } from "@subbiah/component/components/ui/badge";
 
 // Utility Components
-import DataFetchWrapper from '@subbiah/component/components/DataFetchWrapper';
-import BackgroundGradient from '@subbiah/component/components/BackgroundGradient';
+import DataFetchWrapper from "@subbiah/component/components/DataFetchWrapper";
+import BackgroundGradient from "@subbiah/component/components/BackgroundGradient";
 
 // Icons
-import { IconLoading, IconError } from '@subbiah/component/components/icons';
+import { IconLoading, IconError } from "@subbiah/component/components/icons";
 
 function MyComponent() {
   return (
@@ -83,26 +88,30 @@ function MyComponent() {
 ### 4. Use Context Hooks
 
 ```tsx
-import { useThemeContext } from '@subbiah/component/contexts/ThemeContext';
-import { useCursorContext } from '@subbiah/component/contexts/CursorContext';
-import { useAudioContext } from '@subbiah/component/contexts/AudioContext';
+import { useThemeContext } from "@subbiah/component/contexts/ThemeContext";
+import { useCursorContext } from "@subbiah/component/contexts/CursorContext";
+import { useAudioContext } from "@subbiah/component/contexts/AudioContext";
 
 function MyComponent() {
   const { isDark, toggleTheme } = useThemeContext();
   const { isEnabled, toggleCursor } = useCursorContext();
   const { isMuted, toggleMute } = useAudioContext();
 
-  return <div>Theme is {isDark ? 'dark' : 'light'}</div>;
+  return <div>Theme is {isDark ? "dark" : "light"}</div>;
 }
 ```
 
 ### 5. Use Utilities
 
 ```tsx
-import { cn } from '@subbiah/component/lib/utils';
+import { cn } from "@subbiah/component/lib/utils";
 
 function MyComponent() {
-  return <div className={cn('base-class', someCondition && 'conditional-class')}>Content</div>;
+  return (
+    <div className={cn("base-class", someCondition && "conditional-class")}>
+      Content
+    </div>
+  );
 }
 ```
 
@@ -158,7 +167,6 @@ src/
 ### Utility Components
 
 - **DataFetchWrapper** - Handles loading, error, and empty states consistently across the app
-- **ScrollToTop** - Scrolls to top of page on route change (requires `react-router-dom`)
 - **SEO** - Metadata and structured data management (requires `react-helmet-async`)
 - **ErrorBoundary** - Catches and displays React errors gracefully
 - **ThemeToggle** - Toggle between dark/light themes
@@ -265,22 +273,27 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 
 ```tsx
 // src/components/ui/alert.tsx
-import * as React from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-const Alert = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('bg-card rounded-lg border p-4', className)} {...props} />
-  )
-);
-Alert.displayName = 'Alert';
+const Alert = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("bg-card rounded-lg border p-4", className)}
+    {...props}
+  />
+));
+Alert.displayName = "Alert";
 
 export { Alert };
 ```
 
 ```ts
 // src/index.ts
-export { Alert } from './components/ui/alert';
+export { Alert } from "./components/ui/alert";
 ```
 
 ## TypeScript Conventions
@@ -304,8 +317,6 @@ npm run type-check
 Projects using this library must have:
 
 - `react` >= 18.0.0
-- `react-dom` >= 18.0.0
-- `react-router-dom` >= 6.0.0
 - `tailwindcss` >= 3.0.0
 
 ## Tailwind Configuration
@@ -314,14 +325,14 @@ Projects should extend the component library's Tailwind config:
 
 ```js
 // tailwind.config.js
-import baseConfig from '@subbiah/component/tailwind.config';
+import baseConfig from "@subbiah/component/tailwind.config";
 
 export default {
   ...baseConfig,
   content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-    'nodemodules/@subbiah/component/src/**/*.{js,ts,jsx,tsx}',
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "nodemodules/@subbiah/component/src/**/*.{js,ts,jsx,tsx}",
   ],
   plugins: [...(baseConfig.plugins || [])],
 };
@@ -343,7 +354,7 @@ export default {
 ### DataFetchWrapper Pattern
 
 ```tsx
-import { DataFetchWrapper } from '@subbiah/component';
+import { DataFetchWrapper } from "@subbiah/component";
 
 function MyComponent() {
   const [data, setData] = useState([]);
@@ -405,7 +416,7 @@ cd modules/portfolio && npm link @subbiah/component
 Ensure you're importing styles:
 
 ```tsx
-import '@subbiah/component/styles';
+import "@subbiah/component/styles";
 ```
 
 ### Type errors in icon components
