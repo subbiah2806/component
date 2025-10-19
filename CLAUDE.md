@@ -88,9 +88,9 @@ function MyComponent() {
 ### 4. Use Context Hooks
 
 ```tsx
-import { useThemeContext } from "@subbiah/reusable/contexts/ThemeContext";
-import { useCursorContext } from "@subbiah/reusable/contexts/CursorContext";
-import { useAudioContext } from "@subbiah/reusable/contexts/AudioContext";
+import { useThemeContext } from "@subbiah/reusable/statefulComponents/theme/useState";
+import { useCursorContext } from "@subbiah/reusable/statefulComponents/cursor/useState";
+import { useAudioContext } from "@subbiah/reusable/statefulComponents/audio/useState";
 
 function MyComponent() {
   const { isDark, toggleTheme } = useThemeContext();
@@ -120,7 +120,7 @@ function MyComponent() {
 ```
 src/
 ├── components/
-│   ├── ui/                    # UI Components (shadcn/ui)
+│   ├── ui/                    # shadcn/ui components
 │   │   ├── button.tsx
 │   │   ├── card.tsx
 │   │   ├── input.tsx
@@ -128,26 +128,34 @@ src/
 │   │   ├── separator.tsx
 │   │   ├── badge.tsx
 │   │   ├── textarea.tsx
-│   │   └── skeleton.tsx
+│   │   ├── skeleton.tsx
+│   │   ├── sheet.tsx
+│   │   └── form.tsx
 │   ├── icons/
 │   │   └── index.tsx          # All icons in one file
 │   ├── DataFetchWrapper.tsx   # Universal loading/error/empty state handler
 │   ├── ScrollToTop.tsx        # Scroll to top on route change
 │   ├── SEO.tsx                # SEO metadata component
 │   ├── ErrorBoundary.tsx      # React error boundary
-│   ├── ThemeToggle.tsx        # Dark/light mode toggle
-│   ├── CursorToggle.tsx       # Custom cursor toggle
 │   └── BackgroundGradient.tsx # Animated gradient background
-├── contexts/
-│   ├── ThemeContext.tsx       # Theme management (dark/light)
-│   ├── AudioContext.tsx       # Audio settings
-│   └── CursorContext.tsx      # Custom cursor state
-├── providers/
-│   └── ComponentProvider.tsx  # Unified provider wrapping all contexts
+├── statefulComponents/
+│   ├── audio/
+│   │   ├── provider.tsx       # AudioProvider component
+│   │   ├── useState.ts        # useAudioContext hook
+│   │   └── toggle.tsx         # AudioToggle component
+│   ├── cursor/
+│   │   ├── provider.tsx       # CursorProvider component (renders cursor automatically)
+│   │   ├── useState.ts        # useCursorContext hook
+│   │   └── toggle.tsx         # CursorToggle component
+│   └── theme/
+│       ├── provider.tsx       # ThemeProvider component
+│       ├── useState.ts        # useThemeContext hook
+│       └── toggle.tsx         # ThemeToggle component
 ├── lib/
 │   └── utils.ts               # Utility functions (cn helper)
 ├── styles/
 │   └── index.css              # Global styles, CSS variables, Tailwind
+├── InitializeReusableChunks.tsx  # Unified provider wrapping all contexts
 └── index.ts                   # Main export file
 ```
 
@@ -227,7 +235,44 @@ Dark mode is managed by the `ThemeContext` and applies the `.dark` class to the 
 - `animate-float-1` - Floating animation (for BackgroundGradient)
 - `animate-float-2` - Alternative floating animation
 
-## Context Providers
+## Stateful Components Structure
+
+Stateful components are organized in `src/statefulComponents/`:
+
+### Audio
+- `statefulComponents/audio/provider.tsx` - AudioProvider component
+- `statefulComponents/audio/useState.ts` - useAudioContext hook
+- `statefulComponents/audio/toggle.tsx` - AudioToggle component
+
+### Cursor
+- `statefulComponents/cursor/provider.tsx` - CursorProvider component (renders custom cursor automatically)
+- `statefulComponents/cursor/useState.ts` - useCursorContext hook
+- `statefulComponents/cursor/toggle.tsx` - CursorToggle component
+
+### Theme
+- `statefulComponents/theme/provider.tsx` - ThemeProvider component
+- `statefulComponents/theme/useState.ts` - useThemeContext hook
+- `statefulComponents/theme/toggle.tsx` - ThemeToggle component
+
+**Import Examples:**
+```tsx
+// Providers
+import { AudioProvider } from '@subbiah/reusable/statefulComponents/audio/provider';
+import { CursorProvider } from '@subbiah/reusable/statefulComponents/cursor/provider';
+import { ThemeProvider } from '@subbiah/reusable/statefulComponents/theme/provider';
+
+// Hooks
+import { useAudioContext } from '@subbiah/reusable/statefulComponents/audio/useState';
+import { useCursorContext } from '@subbiah/reusable/statefulComponents/cursor/useState';
+import { useThemeContext } from '@subbiah/reusable/statefulComponents/theme/useState';
+
+// Components
+import { AudioToogle } from '@subbiah/reusable/statefulComponents/audio/toggle';
+import CursorToggle from '@subbiah/reusable/statefulComponents/cursor/toggle';
+import ThemeToggle from '@subbiah/reusable/statefulComponents/theme/toggle';
+```
+
+**NO barrel exports (index.tsx)** - Import directly from the source files.
 
 ### ThemeContext
 
@@ -249,8 +294,18 @@ const { isMuted, toggleMute } = useAudioContext();
 
 Manages custom cursor state (only on devices with fine pointer, respects `prefers-reduced-motion`).
 
+**IMPORTANT**: The `CursorProvider` automatically renders the custom cursor when enabled. You do NOT need to import or use a separate `CustomCursor` component.
+
 ```tsx
 const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
+
+// Usage - just wrap your app with CursorProvider
+<CursorProvider>
+  <App />
+</CursorProvider>
+
+// The custom cursor renders automatically when isEnabled is true
+// Use CursorToggle component to allow users to toggle it on/off
 ```
 
 ## Adding New Components
@@ -259,7 +314,7 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 
 ### Steps to Add a Component:
 
-1. **Create the component file** in `src/components/` or `src/components/ui/`
+1. **Create the component file** in `src/components/ui/` for UI components, or `src/components/` for utility components
 2. **Follow shadcn/ui patterns**:
    - Use `React.forwardRef` for ref support
    - Use `cn()` utility for className merging
@@ -274,7 +329,7 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 ```tsx
 // src/components/ui/alert.tsx
 import * as React from "react";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 const Alert = React.forwardRef<
   HTMLDivElement,

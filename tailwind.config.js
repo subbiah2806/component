@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./index.html",
+    "./node_modules/@subbiah/reusable/src/**/*.{js,ts,jsx,tsx}",
+  ],
   darkMode: ["class", "class"],
   theme: {
     extend: {

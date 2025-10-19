@@ -2,6 +2,7 @@ import { Component, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
+  isDev?: boolean;
 }
 
 interface ErrorBoundaryState {
@@ -90,7 +91,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             </p>
 
             {/* Error Details (only in development) */}
-            {import.meta.env.DEV && this.state.error && (
+            {this.props.isDev && this.state.error && (
               <div className="mb-6 rounded-lg border bg-secondary/50 p-4">
                 <p className="mb-2 font-mono text-sm font-semibold text-destructive">
                   Error Details:

@@ -6,6 +6,7 @@
   "exports": {
     "./styles": "./src/styles/index.css",
     "./tailwind.config": "./tailwind.config.js",
+    "./initializeReusableChunks": "./src/InitializeReusableChunks.tsx",
     "./*": "./src/*"
   },
   "files": [
