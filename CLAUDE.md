@@ -1,10 +1,10 @@
-# @subbiah/component - Component Library
+# @subbiah/reusable - Component Library
 
 A reusable component library built with React, TypeScript, Tailwind CSS, and shadcn/ui. This library provides UI components, context providers, and utilities for building modern web applications.
 
 ## Package Information
 
-- **Package Name**: `@subbiah/component` (singular, not plural)
+- **Package Name**: `@subbiah/reusable` (singular, not plural)
 - **Version**: 1.0.0
 - **Type**: ES Module
 - **License**: MIT
@@ -21,7 +21,7 @@ npm link
 
 # In your project (e.g., portfolio)
 cd modules/portfolio
-npm link @subbiah/component
+npm link @subbiah/reusable
 ```
 
 ## Usage in Projects
@@ -31,7 +31,7 @@ npm link @subbiah/component
 Import the component library styles in your `main.tsx` or `index.tsx`:
 
 ```tsx
-import "@subbiah/component/styles";
+import "@subbiah/reusable/styles";
 ```
 
 ### 2. Wrap App with ComponentProvider
@@ -39,7 +39,7 @@ import "@subbiah/component/styles";
 The `ComponentProvider` includes all necessary context providers (Theme, Audio, Cursor):
 
 ```tsx
-import { ComponentProvider, ErrorBoundary } from "@subbiah/component";
+import { ComponentProvider, ErrorBoundary } from "@subbiah/reusable";
 
 <ErrorBoundary>
   <ComponentProvider>
@@ -54,22 +54,22 @@ import { ComponentProvider, ErrorBoundary } from "@subbiah/component";
 
 ```tsx
 // UI Components
-import { Button } from "@subbiah/component/components/ui/button";
+import { Button } from "@subbiah/reusable/components/ui/button";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-} from "@subbiah/component/components/ui/card";
-import { Input } from "@subbiah/component/components/ui/input";
-import { Badge } from "@subbiah/component/components/ui/badge";
+} from "@subbiah/reusable/components/ui/card";
+import { Input } from "@subbiah/reusable/components/ui/input";
+import { Badge } from "@subbiah/reusable/components/ui/badge";
 
 // Utility Components
-import DataFetchWrapper from "@subbiah/component/components/DataFetchWrapper";
-import BackgroundGradient from "@subbiah/component/components/BackgroundGradient";
+import DataFetchWrapper from "@subbiah/reusable/components/DataFetchWrapper";
+import BackgroundGradient from "@subbiah/reusable/components/BackgroundGradient";
 
 // Icons
-import { IconLoading, IconError } from "@subbiah/component/components/icons";
+import { IconLoading, IconError } from "@subbiah/reusable/components/icons";
 
 function MyComponent() {
   return (
@@ -88,9 +88,9 @@ function MyComponent() {
 ### 4. Use Context Hooks
 
 ```tsx
-import { useThemeContext } from "@subbiah/component/contexts/ThemeContext";
-import { useCursorContext } from "@subbiah/component/contexts/CursorContext";
-import { useAudioContext } from "@subbiah/component/contexts/AudioContext";
+import { useThemeContext } from "@subbiah/reusable/contexts/ThemeContext";
+import { useCursorContext } from "@subbiah/reusable/contexts/CursorContext";
+import { useAudioContext } from "@subbiah/reusable/contexts/AudioContext";
 
 function MyComponent() {
   const { isDark, toggleTheme } = useThemeContext();
@@ -104,7 +104,7 @@ function MyComponent() {
 ### 5. Use Utilities
 
 ```tsx
-import { cn } from "@subbiah/component/lib/utils";
+import { cn } from "@subbiah/reusable/lib/utils";
 
 function MyComponent() {
   return (
@@ -255,7 +255,7 @@ const { isEnabled, toggleCursor, canUseCursor } = useCursorContext();
 
 ## Adding New Components
 
-**IMPORTANT**: If any new component is required, create it in this library (`@subbiah/component`), not in individual projects.
+**IMPORTANT**: If any new component is required, create it in this library (`@subbiah/reusable`), not in individual projects.
 
 ### Steps to Add a Component:
 
@@ -325,14 +325,14 @@ Projects should extend the component library's Tailwind config:
 
 ```js
 // tailwind.config.js
-import baseConfig from "@subbiah/component/tailwind.config";
+import baseConfig from "@subbiah/reusable/tailwind.config";
 
 export default {
   ...baseConfig,
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "nodemodules/@subbiah/component/src/**/*.{js,ts,jsx,tsx}",
+    "nodemodules/@subbiah/reusable/src/**/*.{js,ts,jsx,tsx}",
   ],
   plugins: [...(baseConfig.plugins || [])],
 };
@@ -354,7 +354,7 @@ export default {
 ### DataFetchWrapper Pattern
 
 ```tsx
-import { DataFetchWrapper } from "@subbiah/component";
+import { DataFetchWrapper } from "@subbiah/reusable";
 
 function MyComponent() {
   const [data, setData] = useState([]);
@@ -378,7 +378,7 @@ function MyComponent() {
 ### Icon Usage Pattern
 
 ```tsx
-import { IconLoading, IconError, IconSuccess } from '@subbiah/component';
+import { IconLoading, IconError, IconSuccess } from '@subbiah/reusable';
 
 // Icons scale with parent font size (width/height are 1em)
 <IconLoading className="text-primary" style={{ fontSize: '24px' }} />
@@ -390,7 +390,7 @@ import { IconLoading, IconError, IconSuccess } from '@subbiah/component';
 ### Button Variants Pattern
 
 ```tsx
-import { Button } from '@subbiah/component';
+import { Button } from '@subbiah/reusable';
 
 <Button variant="default">Primary Action</Button>
 <Button variant="outline">Secondary Action</Button>
@@ -408,7 +408,7 @@ import { Button } from '@subbiah/component';
 
 ```bash
 cd modules/component && npm link
-cd modules/portfolio && npm link @subbiah/component
+cd modules/portfolio && npm link @subbiah/reusable
 ```
 
 ### Styles not applied
@@ -416,7 +416,7 @@ cd modules/portfolio && npm link @subbiah/component
 Ensure you're importing styles:
 
 ```tsx
-import "@subbiah/component/styles";
+import "@subbiah/reusable/styles";
 ```
 
 ### Type errors in icon components

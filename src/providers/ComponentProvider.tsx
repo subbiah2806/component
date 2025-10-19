@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { ThemeProvider } from '../contexts/Theme/provider';
-import { AudioProvider } from '../contexts/Audio/provider';
-import { CursorProvider } from '../contexts/Cursor/provider';
+import { ReactNode } from "react";
+import { ThemeProvider } from "../contexts/Theme/provider";
+import { AudioProvider } from "../contexts/Audio/provider";
+import { CursorProvider } from "../contexts/Cursor/provider";
 
 interface ComponentProviderProps {
   children: ReactNode;
@@ -17,7 +17,7 @@ interface ComponentProviderProps {
  *
  * @example
  * ```tsx
- * import { ComponentProvider } from '@subbiah/component';
+ * import { ComponentProvider } from '@subbiah/reusable';
  *
  * function App() {
  *   return (

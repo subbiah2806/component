@@ -1,15 +1,12 @@
 {
-  "name": "@subbiah/component",
+  "name": "@subbiah/reusable",
   "version": "2.0.0",
   "description": "Reusable component library built with React, TypeScript, and Tailwind CSS",
   "type": "module",
   "exports": {
     "./styles": "./src/styles/index.css",
     "./tailwind.config": "./tailwind.config.js",
-    "./components/*": "./src/components/*",
-    "./contexts/*": "./src/contexts/*/index.ts",
-    "./providers/*": "./src/providers/*",
-    "./lib/*": "./src/lib/*"
+    "./*": "./src/*"
   },
   "files": [
     "src",

@@ -1,4 +1,4 @@
-# @subbiah/component
+# @subbiah/reusable
 
 Material Design inspired component library for personal projects.
 
