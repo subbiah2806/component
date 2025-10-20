@@ -3,7 +3,7 @@ import { useAudioContext } from './context';
 import { Button } from '../../components/ui/button';
 import { cn } from '../../lib/utils';
 
-export function AudioToogle() {
+export function AudioToggle() {
   const { isMuted, toggleMute } = useAudioContext();
 
   return (
