@@ -14,27 +14,27 @@ import '@subbiah/reusable/styles';
 
 Theme variables you can reference in your code:
 
-| Variable                | Purpose                           |
-| ----------------------- | --------------------------------- |
-| `--background`          | Main background color             |
-| `--foreground`          | Main text color                   |
-| `--card`                | Card background                   |
-| `--card-foreground`     | Card text color                   |
-| `--primary`             | Primary action color              |
-| `--primary-foreground`  | Primary action text color         |
-| `--secondary`           | Secondary action color            |
-| `--secondary-foreground`| Secondary action text color       |
-| `--muted`               | Muted background                  |
-| `--muted-foreground`    | Muted text                        |
-| `--accent`              | Accent background                 |
-| `--accent-foreground`   | Accent text                       |
-| `--destructive`         | Destructive action color (red)    |
-| `--border`              | Border color                      |
-| `--input`               | Input border color                |
-| `--ring`                | Focus ring color                  |
-| `--success`             | Success state color (green)       |
-| `--warning`             | Warning state color (yellow)      |
-| `--radius`              | Border radius (0.75rem default)   |
+| Variable                 | Purpose                         |
+| ------------------------ | ------------------------------- |
+| `--background`           | Main background color           |
+| `--foreground`           | Main text color                 |
+| `--card`                 | Card background                 |
+| `--card-foreground`      | Card text color                 |
+| `--primary`              | Primary action color            |
+| `--primary-foreground`   | Primary action text color       |
+| `--secondary`            | Secondary action color          |
+| `--secondary-foreground` | Secondary action text color     |
+| `--muted`                | Muted background                |
+| `--muted-foreground`     | Muted text                      |
+| `--accent`               | Accent background               |
+| `--accent-foreground`    | Accent text                     |
+| `--destructive`          | Destructive action color (red)  |
+| `--border`               | Border color                    |
+| `--input`                | Input border color              |
+| `--ring`                 | Focus ring color                |
+| `--success`              | Success state color (green)     |
+| `--warning`              | Warning state color (yellow)    |
+| `--radius`               | Border radius (0.75rem default) |
 
 **Usage:**
 
@@ -87,7 +87,7 @@ Floating animation for gradient orbs and decorative elements.
 **Example:**
 
 ```tsx
-<div className="absolute rounded-full bg-primary/20 blur-3xl animate-float-1">
+<div className="bg-primary/20 animate-float-1 absolute rounded-full blur-3xl">
   {/* Floating gradient orb */}
 </div>
 ```
@@ -101,7 +101,7 @@ Alternative floating animation pattern.
 **Example:**
 
 ```tsx
-<div className="absolute rounded-full bg-secondary/20 blur-3xl animate-float-2">
+<div className="bg-secondary/20 animate-float-2 absolute rounded-full blur-3xl">
   {/* Floating gradient orb */}
 </div>
 ```

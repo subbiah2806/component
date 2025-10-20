@@ -27,11 +27,11 @@ import { Badge } from '@subbiah/reusable/components/ui/badge';
 
 ## Props
 
-| Prop        | Type                                                                             | Default     | Description                    |
-| ----------- | -------------------------------------------------------------------------------- | ----------- | ------------------------------ |
-| `variant`   | `"default" \| "primary" \| "secondary" \| "destructive" \| "outline"`            | `"default"` | Visual style variant           |
-| `className` | `string`                                                                         | -           | Additional CSS classes         |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`                                           | -           | Standard div attributes        |
+| Prop        | Type                                                                  | Default     | Description             |
+| ----------- | --------------------------------------------------------------------- | ----------- | ----------------------- |
+| `variant`   | `"default" \| "primary" \| "secondary" \| "destructive" \| "outline"` | `"default"` | Visual style variant    |
+| `className` | `string`                                                              | -           | Additional CSS classes  |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>`                                | -           | Standard div attributes |
 
 ## Variants
 
@@ -107,9 +107,9 @@ import { Badge } from '@subbiah/reusable/components/ui/badge';
 import { Check } from 'lucide-react';
 
 <Badge variant="primary">
-  <Check className="h-3 w-3 mr-1" />
+  <Check className="mr-1 h-3 w-3" />
   Verified
-</Badge>
+</Badge>;
 ```
 
 **Visual:**

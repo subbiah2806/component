@@ -13,6 +13,7 @@ import { InitializeReusableChunks } from '@subbiah/reusable/InitializeReusableCh
 `InitializeReusableChunks` is a wrapper component that sets up all required context providers and imports global styles. This is the **required** first step when using the component library in your application.
 
 **What it provides:**
+
 - Theme management (dark/light mode)
 - Audio feedback system
 - Custom cursor functionality
@@ -20,8 +21,8 @@ import { InitializeReusableChunks } from '@subbiah/reusable/InitializeReusableCh
 
 ## Props
 
-| Prop       | Type        | Description                              |
-| ---------- | ----------- | ---------------------------------------- |
+| Prop       | Type        | Description                               |
+| ---------- | ----------- | ----------------------------------------- |
 | `children` | `ReactNode` | Your application components to be wrapped |
 
 ## Basic Usage
@@ -43,16 +44,21 @@ function App() {
 ## What Gets Initialized
 
 ### 1. ThemeProvider
+
 Provides dark/light theme management throughout your app. Access via `useTheme()` hook.
 
 ### 2. AudioProvider
+
 Enables global audio feedback (click sounds, interactions). Access via `useAudio()` hook.
 
 ### 3. CursorProvider
+
 Manages custom animated cursor state. Access via `useCursor()` hook.
 
 ### 4. Global Styles
+
 Automatically imports all necessary CSS including:
+
 - Tailwind base, components, and utilities
 - Theme CSS variables
 - Custom animations
@@ -69,7 +75,7 @@ import { Button } from '@subbiah/reusable/components/ui/button';
 function App() {
   return (
     <InitializeReusableChunks>
-      <div className="min-h-screen bg-background">
+      <div className="bg-background min-h-screen">
         <h1 className="text-foreground">My App</h1>
         <Button>Click Me</Button>
       </div>

@@ -13,7 +13,7 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
-  useForm
+  useForm,
 } from '@subbiah/reusable/components/ui/form';
 ```
 
@@ -33,8 +33,8 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 
 const form = useForm({
   defaultValues: {
-    username: ''
-  }
+    username: '',
+  },
 });
 
 <Form {...form}>
@@ -55,7 +55,7 @@ const form = useForm({
     />
     <Button type="submit">Submit</Button>
   </form>
-</Form>
+</Form>;
 ```
 
 **Visual:**
@@ -74,37 +74,37 @@ Form provider that wraps your form and provides context.
 
 Controller component that connects a field to React Hook Form.
 
-| Prop      | Type                    | Description                          |
-| --------- | ----------------------- | ------------------------------------ |
-| `control` | `Control<TFieldValues>` | Form control from useForm            |
-| `name`    | `TName`                 | Field name (typed)                   |
-| `render`  | `Function`              | Render prop with field and fieldState|
+| Prop      | Type                    | Description                           |
+| --------- | ----------------------- | ------------------------------------- |
+| `control` | `Control<TFieldValues>` | Form control from useForm             |
+| `name`    | `TName`                 | Field name (typed)                    |
+| `render`  | `Function`              | Render prop with field and fieldState |
 
 ### FormItem
 
 Wrapper for individual form field with spacing.
 
-| Prop        | Type                                      | Description            |
-| ----------- | ----------------------------------------- | ---------------------- |
-| `className` | `string`                                  | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | Standard div props     |
+| Prop        | Type                                   | Description            |
+| ----------- | -------------------------------------- | ---------------------- |
+| `className` | `string`                               | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | Standard div props     |
 
 ### FormLabel
 
 Label for form fields with error state styling.
 
-| Prop        | Type                                      | Description                |
-| ----------- | ----------------------------------------- | -------------------------- |
-| `className` | `string`                                  | Additional CSS classes     |
-| `...props`  | `React.ComponentPropsWithoutRef<typeof Label>` | Label component props |
+| Prop        | Type                                           | Description            |
+| ----------- | ---------------------------------------------- | ---------------------- |
+| `className` | `string`                                       | Additional CSS classes |
+| `...props`  | `React.ComponentPropsWithoutRef<typeof Label>` | Label component props  |
 
 ### FormControl
 
 Wrapper for form input controls with proper ARIA attributes.
 
-| Prop        | Type                                      | Description            |
-| ----------- | ----------------------------------------- | ---------------------- |
-| `...props`  | `React.ComponentPropsWithoutRef<typeof Slot>` | Slot props         |
+| Prop       | Type                                          | Description |
+| ---------- | --------------------------------------------- | ----------- |
+| `...props` | `React.ComponentPropsWithoutRef<typeof Slot>` | Slot props  |
 
 ### FormDescription
 
@@ -119,11 +119,11 @@ Helper text for form fields.
 
 Error message display for form fields.
 
-| Prop        | Type                                         | Description                    |
-| ----------- | -------------------------------------------- | ------------------------------ |
-| `className` | `string`                                     | Additional CSS classes         |
-| `children`  | `React.ReactNode`                            | Custom message (optional)      |
-| `...props`  | `React.HTMLAttributes<HTMLParagraphElement>` | Standard p props               |
+| Prop        | Type                                         | Description               |
+| ----------- | -------------------------------------------- | ------------------------- |
+| `className` | `string`                                     | Additional CSS classes    |
+| `children`  | `React.ReactNode`                            | Custom message (optional) |
+| `...props`  | `React.HTMLAttributes<HTMLParagraphElement>` | Standard p props          |
 
 ## Examples
 
@@ -133,8 +133,8 @@ Error message display for form fields.
 const form = useForm({
   defaultValues: {
     email: '',
-    password: ''
-  }
+    password: '',
+  },
 });
 
 <Form {...form}>
@@ -167,7 +167,7 @@ const form = useForm({
     />
     <Button type="submit">Login</Button>
   </form>
-</Form>
+</Form>;
 ```
 
 **Visual:**
@@ -182,15 +182,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
-  email: z.string().email('Invalid email address')
+  email: z.string().email('Invalid email address'),
 });
 
 const form = useForm({
   resolver: zodResolver(formSchema),
   defaultValues: {
     username: '',
-    email: ''
-  }
+    email: '',
+  },
 });
 
 <Form {...form}>
@@ -204,9 +204,7 @@ const form = useForm({
           <FormControl>
             <Input {...field} />
           </FormControl>
-          <FormDescription>
-            Must be at least 3 characters
-          </FormDescription>
+          <FormDescription>Must be at least 3 characters</FormDescription>
           <FormMessage />
         </FormItem>
       )}
@@ -226,7 +224,7 @@ const form = useForm({
     />
     <Button type="submit">Submit</Button>
   </form>
-</Form>
+</Form>;
 ```
 
 **Visual:**
@@ -243,15 +241,9 @@ const form = useForm({
     <FormItem>
       <FormLabel>Bio</FormLabel>
       <FormControl>
-        <Textarea
-          placeholder="Tell us about yourself"
-          className="resize-none"
-          {...field}
-        />
+        <Textarea placeholder="Tell us about yourself" className="resize-none" {...field} />
       </FormControl>
-      <FormDescription>
-        Brief description about yourself
-      </FormDescription>
+      <FormDescription>Brief description about yourself</FormDescription>
       <FormMessage />
     </FormItem>
   )}
@@ -271,11 +263,7 @@ const form = useForm({
   render={({ field }) => (
     <FormItem className="flex items-center space-x-2">
       <FormControl>
-        <input
-          type="checkbox"
-          checked={field.value}
-          onChange={field.onChange}
-        />
+        <input type="checkbox" checked={field.value} onChange={field.onChange} />
       </FormControl>
       <FormLabel className="!mt-0">Subscribe to newsletter</FormLabel>
     </FormItem>
@@ -325,15 +313,21 @@ const [step, setStep] = useState(1);
       />
     )}
     <div className="flex gap-2">
-      {step > 1 && <Button type="button" onClick={() => setStep(step - 1)}>Back</Button>}
+      {step > 1 && (
+        <Button type="button" onClick={() => setStep(step - 1)}>
+          Back
+        </Button>
+      )}
       {step < 2 ? (
-        <Button type="button" onClick={() => setStep(step + 1)}>Next</Button>
+        <Button type="button" onClick={() => setStep(step + 1)}>
+          Next
+        </Button>
       ) : (
         <Button type="submit">Submit</Button>
       )}
     </div>
   </form>
-</Form>
+</Form>;
 ```
 
 **Visual:**
@@ -359,8 +353,8 @@ const form = useForm<{
 }>({
   defaultValues: {
     username: '',
-    email: ''
-  }
+    email: '',
+  },
 });
 
 // Field names are type-checked
@@ -368,12 +362,8 @@ const form = useForm<{
   control={form.control}
   name="username" // ✓ Typed
   // name="invalid" // ✗ Type error
-  render={({ field }) => (
-    <FormItem>
-      {/* ... */}
-    </FormItem>
-  )}
-/>
+  render={({ field }) => <FormItem>{/* ... */}</FormItem>}
+/>;
 ```
 
 ## Notes

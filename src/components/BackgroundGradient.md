@@ -28,10 +28,10 @@ import BackgroundGradient from '@subbiah/reusable/components/BackgroundGradient'
 
 ## Props
 
-| Prop        | Type     | Default | Description                                    |
-| ----------- | -------- | ------- | ---------------------------------------------- |
-| `className` | `string` | -       | Additional CSS classes for container           |
-| `orbCount`  | `number` | `3`     | Number of floating orbs (max 5)                |
+| Prop        | Type     | Default | Description                          |
+| ----------- | -------- | ------- | ------------------------------------ |
+| `className` | `string` | -       | Additional CSS classes for container |
+| `orbCount`  | `number` | `3`     | Number of floating orbs (max 5)      |
 
 ## Examples
 
@@ -109,6 +109,7 @@ import BackgroundGradient from '@subbiah/reusable/components/BackgroundGradient'
 ## Orb Colors
 
 The component uses these theme colors (in order):
+
 1. `bg-primary/30` (30% opacity)
 2. `bg-secondary/30` (30% opacity)
 3. `bg-primary/10` (10% opacity)
@@ -148,7 +149,7 @@ interface BackgroundGradientProps {
 - Orb 2 has special hardcoded dimensions (300x300px at specific position)
 - Other orbs have calculated dimensions: `300 + index * 50` pixels
 - Orbs are positioned via percentage-based top/left values
-- Opacity decreases for higher index orbs (0.6 - index * 0.1)
+- Opacity decreases for higher index orbs (0.6 - index \* 0.1)
 - Uses absolute positioning for each orb
 - Rounded-full for circular orb shape
 - blur-3xl for strong blur effect

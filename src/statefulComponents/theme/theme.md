@@ -50,9 +50,9 @@ Provider component that manages theme state and exposes context.
 
 **Props:**
 
-| Prop       | Type         | Description                |
-| ---------- | ------------ | -------------------------- |
-| `children` | `ReactNode`  | **Required**. App content  |
+| Prop       | Type        | Description               |
+| ---------- | ----------- | ------------------------- |
+| `children` | `ReactNode` | **Required**. App content |
 
 ### ThemeToggle
 
@@ -83,7 +83,7 @@ import ThemeToggle from '@subbiah/reusable/statefulComponents/theme/toggle';
 
 function Header() {
   return (
-    <header className="flex justify-between items-center p-4">
+    <header className="flex items-center justify-between p-4">
       <h1>My App</h1>
       <ThemeToggle />
     </header>
@@ -128,9 +128,7 @@ function Settings() {
   return (
     <div>
       <p>Current: {theme}</p>
-      <Button onClick={toggleTheme}>
-        Switch to {theme === 'dark' ? 'light' : 'dark'} mode
-      </Button>
+      <Button onClick={toggleTheme}>Switch to {theme === 'dark' ? 'light' : 'dark'} mode</Button>
     </div>
   );
 }
@@ -148,12 +146,7 @@ import { useThemeContext } from '@subbiah/reusable/statefulComponents/theme/prov
 function Logo() {
   const { isDark } = useThemeContext();
 
-  return (
-    <img
-      src={isDark ? '/logo-dark.svg' : '/logo-light.svg'}
-      alt="Logo"
-    />
-  );
+  return <img src={isDark ? '/logo-dark.svg' : '/logo-light.svg'} alt="Logo" />;
 }
 ```
 
@@ -170,10 +163,7 @@ function CustomThemeToggle() {
   const { isDark, toggleTheme } = useThemeContext();
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="px-4 py-2 rounded-lg border"
-    >
+    <button onClick={toggleTheme} className="rounded-lg border px-4 py-2">
       {isDark ? '🌞 Light Mode' : '🌙 Dark Mode'}
     </button>
   );
@@ -210,6 +200,7 @@ function CustomThemeToggle() {
 **Visual:**
 
 > Circular button (rounded-full), outline variant, icon size (h-5 w-5), includes transition-colors
+>
 > - Dark mode: Shows Sun icon
 > - Light mode: Shows Moon icon
 > - Has aria-label for accessibility

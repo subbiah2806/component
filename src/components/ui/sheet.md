@@ -15,7 +15,7 @@ import {
   SheetTitle,
   SheetDescription,
   SheetPortal,
-  SheetOverlay
+  SheetOverlay,
 } from '@subbiah/reusable/components/ui/sheet';
 ```
 
@@ -52,37 +52,37 @@ import {
 
 ### Sheet
 
-| Prop          | Type      | Description                          |
-| ------------- | --------- | ------------------------------------ |
-| Root props from Radix Dialog | - | open, onOpenChange, defaultOpen, modal |
+| Prop                         | Type | Description                            |
+| ---------------------------- | ---- | -------------------------------------- |
+| Root props from Radix Dialog | -    | open, onOpenChange, defaultOpen, modal |
 
 ### SheetTrigger
 
-| Prop       | Type      | Description                                       |
-| ---------- | --------- | ------------------------------------------------- |
-| `asChild`  | `boolean` | Render as child component (recommended)           |
+| Prop      | Type      | Description                             |
+| --------- | --------- | --------------------------------------- |
+| `asChild` | `boolean` | Render as child component (recommended) |
 
 ### SheetContent
 
-| Prop        | Type                                         | Default   | Description                              |
-| ----------- | -------------------------------------------- | --------- | ---------------------------------------- |
-| `side`      | `"top" \| "bottom" \| "left" \| "right"`     | `"right"` | Direction from which sheet slides in     |
-| `className` | `string`                                     | -         | Additional CSS classes                   |
-| `children`  | `React.ReactNode`                            | -         | Sheet content                            |
+| Prop        | Type                                     | Default   | Description                          |
+| ----------- | ---------------------------------------- | --------- | ------------------------------------ |
+| `side`      | `"top" \| "bottom" \| "left" \| "right"` | `"right"` | Direction from which sheet slides in |
+| `className` | `string`                                 | -         | Additional CSS classes               |
+| `children`  | `React.ReactNode`                        | -         | Sheet content                        |
 
 ### SheetHeader, SheetFooter
+
+| Prop        | Type                                   | Description            |
+| ----------- | -------------------------------------- | ---------------------- |
+| `className` | `string`                               | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | Standard div props     |
+
+### SheetTitle, SheetDescription
 
 | Prop        | Type                                      | Description            |
 | ----------- | ----------------------------------------- | ---------------------- |
 | `className` | `string`                                  | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | Standard div props     |
-
-### SheetTitle, SheetDescription
-
-| Prop        | Type                                            | Description                |
-| ----------- | ----------------------------------------------- | -------------------------- |
-| `className` | `string`                                        | Additional CSS classes     |
-| `...props`  | Props from Radix Dialog Title/Description       | Standard props             |
+| `...props`  | Props from Radix Dialog Title/Description | Standard props         |
 
 ## Variants
 
@@ -177,7 +177,7 @@ import {
     <SheetHeader>
       <SheetTitle>Navigation</SheetTitle>
     </SheetHeader>
-    <nav className="flex flex-col gap-4 mt-6">
+    <nav className="mt-6 flex flex-col gap-4">
       <a href="/">Home</a>
       <a href="/about">About</a>
       <a href="/contact">Contact</a>
@@ -200,11 +200,9 @@ import {
   <SheetContent>
     <SheetHeader>
       <SheetTitle>Add New User</SheetTitle>
-      <SheetDescription>
-        Enter the user details below
-      </SheetDescription>
+      <SheetDescription>Enter the user details below</SheetDescription>
     </SheetHeader>
-    <form className="space-y-4 mt-6">
+    <form className="mt-6 space-y-4">
       <div>
         <Label htmlFor="name">Name</Label>
         <Input id="name" placeholder="John Doe" />
@@ -241,7 +239,7 @@ const [open, setOpen] = useState(false);
     <p>This sheet's state is controlled externally.</p>
     <Button onClick={() => setOpen(false)}>Close via State</Button>
   </SheetContent>
-</Sheet>
+</Sheet>;
 ```
 
 **Visual:**

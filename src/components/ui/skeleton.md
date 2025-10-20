@@ -27,10 +27,10 @@ import { Skeleton } from '@subbiah/reusable/components/ui/skeleton';
 
 ## Props
 
-| Prop        | Type                                      | Default | Description                          |
-| ----------- | ----------------------------------------- | ------- | ------------------------------------ |
-| `className` | `string`                                  | -       | Additional CSS classes (size, shape) |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div attributes              |
+| Prop        | Type                                   | Default | Description                          |
+| ----------- | -------------------------------------- | ------- | ------------------------------------ |
+| `className` | `string`                               | -       | Additional CSS classes (size, shape) |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div attributes              |
 
 ## Examples
 
@@ -74,7 +74,7 @@ import { Skeleton } from '@subbiah/reusable/components/ui/skeleton';
 <Card>
   <CardHeader>
     <Skeleton className="h-6 w-1/2" />
-    <Skeleton className="h-4 w-3/4 mt-2" />
+    <Skeleton className="mt-2 h-4 w-3/4" />
   </CardHeader>
   <CardContent>
     <div className="space-y-2">
@@ -97,7 +97,7 @@ import { Skeleton } from '@subbiah/reusable/components/ui/skeleton';
   {Array.from({ length: 3 }).map((_, i) => (
     <div key={i} className="flex items-center space-x-4">
       <Skeleton className="h-12 w-12 rounded-full" />
-      <div className="space-y-2 flex-1">
+      <div className="flex-1 space-y-2">
         <Skeleton className="h-4 w-1/4" />
         <Skeleton className="h-4 w-1/2" />
       </div>
@@ -133,11 +133,9 @@ import { Skeleton } from '@subbiah/reusable/components/ui/skeleton';
 ### Example 8: Conditional Loading
 
 ```tsx
-{isLoading ? (
-  <Skeleton className="h-8 w-full" />
-) : (
-  <h1>{title}</h1>
-)}
+{
+  isLoading ? <Skeleton className="h-8 w-full" /> : <h1>{title}</h1>;
+}
 ```
 
 **Visual:**
@@ -154,10 +152,7 @@ import { Skeleton } from '@subbiah/reusable/components/ui/skeleton';
 ## TypeScript
 
 ```tsx
-function Skeleton({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>)
+function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>);
 ```
 
 ## Notes
@@ -165,7 +160,7 @@ function Skeleton({
 - Uses `animate-pulse` from Tailwind for smooth pulsing animation
 - Background is semi-transparent primary color (`bg-primary/10` = 10% opacity)
 - Rounded corners (`rounded-md`) for modern appearance
-- No default size - must specify via className (h-* w-*)
+- No default size - must specify via className (h-_ w-_)
 - Respects reduced motion preferences automatically
 - Combine with other Tailwind utilities for custom shapes:
   - Circle: `rounded-full`

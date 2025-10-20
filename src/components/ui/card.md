@@ -11,7 +11,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter
+  CardFooter,
 } from '@subbiah/reusable/components/ui/card';
 ```
 
@@ -47,45 +47,45 @@ import {
 
 ### Card
 
-| Prop        | Type                                      | Default | Description            |
-| ----------- | ----------------------------------------- | ------- | ---------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div props     |
+| Prop        | Type                                   | Default | Description            |
+| ----------- | -------------------------------------- | ------- | ---------------------- |
+| `className` | `string`                               | -       | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div props     |
 
 ### CardHeader
 
-| Prop        | Type                                      | Default | Description            |
-| ----------- | ----------------------------------------- | ------- | ---------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div props     |
+| Prop        | Type                                   | Default | Description            |
+| ----------- | -------------------------------------- | ------- | ---------------------- |
+| `className` | `string`                               | -       | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div props     |
 
 ### CardTitle
 
-| Prop        | Type                                      | Default | Description            |
-| ----------- | ----------------------------------------- | ------- | ---------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div props     |
+| Prop        | Type                                   | Default | Description            |
+| ----------- | -------------------------------------- | ------- | ---------------------- |
+| `className` | `string`                               | -       | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div props     |
 
 ### CardDescription
 
-| Prop        | Type                                      | Default | Description            |
-| ----------- | ----------------------------------------- | ------- | ---------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div props     |
+| Prop        | Type                                   | Default | Description            |
+| ----------- | -------------------------------------- | ------- | ---------------------- |
+| `className` | `string`                               | -       | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div props     |
 
 ### CardContent
 
-| Prop        | Type                                      | Default | Description            |
-| ----------- | ----------------------------------------- | ------- | ---------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div props     |
+| Prop        | Type                                   | Default | Description            |
+| ----------- | -------------------------------------- | ------- | ---------------------- |
+| `className` | `string`                               | -       | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div props     |
 
 ### CardFooter
 
-| Prop        | Type                                      | Default | Description            |
-| ----------- | ----------------------------------------- | ------- | ---------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes |
-| `...props`  | `React.HTMLAttributes<HTMLDivElement>`    | -       | Standard div props     |
+| Prop        | Type                                   | Default | Description            |
+| ----------- | -------------------------------------- | ------- | ---------------------- |
+| `className` | `string`                               | -       | Additional CSS classes |
+| `...props`  | `React.HTMLAttributes<HTMLDivElement>` | -       | Standard div props     |
 
 ## Examples
 
@@ -149,7 +149,7 @@ import {
 ### Example 4: Card Grid Layout
 
 ```tsx
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
   <Card>
     <CardHeader>
       <CardTitle>Feature 1</CardTitle>
@@ -184,7 +184,7 @@ import {
 ### Example 5: Card with Custom Styling
 
 ```tsx
-<Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border-primary/50">
+<Card className="from-primary/10 to-secondary/10 border-primary/50 bg-gradient-to-br">
   <CardHeader>
     <CardTitle className="text-primary">Highlighted Card</CardTitle>
     <CardDescription>This card stands out with custom colors</CardDescription>
@@ -210,12 +210,12 @@ import {
 
 ```tsx
 // All components use standard React.HTMLAttributes<HTMLDivElement>
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
-const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
-const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
-const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
-const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
-const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>
+const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
+const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
+const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
+const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
+const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
+const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>;
 ```
 
 ## Notes

@@ -52,9 +52,9 @@ Provider component that manages cursor state, rendering, and tracking.
 
 **Props:**
 
-| Prop       | Type         | Description                |
-| ---------- | ------------ | -------------------------- |
-| `children` | `ReactNode`  | **Required**. App content  |
+| Prop       | Type        | Description               |
+| ---------- | ----------- | ------------------------- |
+| `children` | `ReactNode` | **Required**. App content |
 
 ### CursorToggle
 
@@ -62,9 +62,9 @@ Pre-built button component for enabling/disabling custom cursor.
 
 **Props:**
 
-| Prop       | Type          | Description                                  |
-| ---------- | ------------- | -------------------------------------------- |
-| `onToggle` | `() => void`  | Optional callback when toggle is clicked     |
+| Prop       | Type         | Description                              |
+| ---------- | ------------ | ---------------------------------------- |
+| `onToggle` | `() => void` | Optional callback when toggle is clicked |
 
 ### useCursorContext
 
@@ -89,7 +89,7 @@ import CursorToggle from '@subbiah/reusable/statefulComponents/cursor/toggle';
 
 function Header() {
   return (
-    <header className="flex justify-between items-center p-4">
+    <header className="flex items-center justify-between p-4">
       <h1>My App</h1>
       <CursorToggle />
     </header>
@@ -113,11 +113,7 @@ function CursorIndicator() {
     return <p>Custom cursor not supported on this device</p>;
   }
 
-  return (
-    <div>
-      Custom cursor: {isEnabled ? 'Enabled ✓' : 'Disabled ✗'}
-    </div>
-  );
+  return <div>Custom cursor: {isEnabled ? 'Enabled ✓' : 'Disabled ✗'}</div>;
 }
 ```
 
@@ -137,11 +133,7 @@ function Settings() {
 
   return (
     <label>
-      <input
-        type="checkbox"
-        checked={isEnabled}
-        onChange={toggleCursor}
-      />
+      <input type="checkbox" checked={isEnabled} onChange={toggleCursor} />
       Enable custom cursor
     </label>
   );
@@ -157,7 +149,7 @@ function Settings() {
 ```tsx
 function CustomCard() {
   return (
-    <div className="clickable p-4 border rounded">
+    <div className="clickable rounded border p-4">
       {/* This div will trigger cursor hover effect even though it's not a button/link */}
       <h3>Clickable Card</h3>
       <p>Hover to see cursor effect</p>
@@ -181,9 +173,7 @@ function Header() {
     // Additional logic here
   };
 
-  return (
-    <CursorToggle onToggle={handleToggle} />
-  );
+  return <CursorToggle onToggle={handleToggle} />;
 }
 ```
 
@@ -196,6 +186,7 @@ function Header() {
 ### Device Detection
 
 On mount, checks:
+
 1. Fine pointer capability via `matchMedia('(pointer: fine)')`
 2. Motion preference via `matchMedia('(prefers-reduced-motion: reduce)')`
 3. Only enables if has fine pointer AND no reduced motion preference
@@ -217,6 +208,7 @@ On mount, checks:
 ### Hover Detection
 
 Triggers on elements that are:
+
 - `<button>` tags
 - `<a>` tags
 - Inside a `<button>` or `<a>` (via closest())
@@ -234,6 +226,7 @@ Triggers on elements that are:
 > 24x24px circle, 2px border in primary color, semi-transparent primary background (20% opacity), positioned at cursor location with translate(-50%, -50%)
 
 **Hover State:**
+
 > Scales to 1.5x, accent background (30% opacity), shadow glow in accent color, border changes to primary color
 
 ### Inner Dot
@@ -251,6 +244,7 @@ Triggers on elements that are:
 **Visual:**
 
 > Circular button (rounded-full), outline variant, icon size (h-5 w-5), includes transition-colors
+>
 > - Enabled: Shows Circle icon (filled)
 > - Disabled: Shows MousePointer2 icon
 > - Has aria-label and title for accessibility

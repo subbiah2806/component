@@ -30,19 +30,20 @@ import DataFetchWrapper from '@subbiah/reusable/components/DataFetchWrapper';
 
 ## Props
 
-| Prop             | Type                         | Default            | Description                                          |
-| ---------------- | ---------------------------- | ------------------ | ---------------------------------------------------- |
-| `isLoading`      | `boolean`                    | -                  | **Required**. Loading state indicator                |
-| `error`          | `string \| Error \| null`    | -                  | Error to display (string, Error object, or null)     |
-| `isEmpty`        | `boolean`                    | `false`            | Whether data is empty                                |
-| `children`       | `ReactNode`                  | -                  | **Required**. Content to render when data is loaded  |
-| `className`      | `string`                     | `''`               | Additional CSS classes for wrapper                   |
-| `loadingMessage` | `string`                     | `'Loading...'`     | Custom loading message                               |
-| `emptyMessage`   | `string`                     | `'No data available'` | Custom empty state message                        |
+| Prop             | Type                      | Default               | Description                                         |
+| ---------------- | ------------------------- | --------------------- | --------------------------------------------------- |
+| `isLoading`      | `boolean`                 | -                     | **Required**. Loading state indicator               |
+| `error`          | `string \| Error \| null` | -                     | Error to display (string, Error object, or null)    |
+| `isEmpty`        | `boolean`                 | `false`               | Whether data is empty                               |
+| `children`       | `ReactNode`               | -                     | **Required**. Content to render when data is loaded |
+| `className`      | `string`                  | `''`                  | Additional CSS classes for wrapper                  |
+| `loadingMessage` | `string`                  | `'Loading...'`        | Custom loading message                              |
+| `emptyMessage`   | `string`                  | `'No data available'` | Custom empty state message                          |
 
 ## State Priority
 
 States are checked in this order:
+
 1. **Loading**: Shows if `isLoading` is true
 2. **Error**: Shows if `error` is truthy
 3. **Empty**: Shows if `isEmpty` is true
@@ -57,7 +58,7 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 <DataFetchWrapper isLoading={isLoading} error={error} isEmpty={!data?.length}>
   <UserList users={data} />
-</DataFetchWrapper>
+</DataFetchWrapper>;
 ```
 
 **Visual:**
@@ -138,11 +139,7 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 <DataFetchWrapper isLoading={usersLoading} error={usersError} isEmpty={!users?.length}>
   <div>
     <h2>Users</h2>
-    <DataFetchWrapper
-      isLoading={postsLoading}
-      error={postsError}
-      isEmpty={!posts?.length}
-    >
+    <DataFetchWrapper isLoading={postsLoading} error={postsError} isEmpty={!posts?.length}>
       <PostsList posts={posts} />
     </DataFetchWrapper>
   </div>

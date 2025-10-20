@@ -28,10 +28,10 @@ import { Textarea } from '@subbiah/reusable/components/ui/textarea';
 
 ## Props
 
-| Prop        | Type                                      | Default | Description                                                 |
-| ----------- | ----------------------------------------- | ------- | ----------------------------------------------------------- |
-| `className` | `string`                                  | -       | Additional CSS classes                                      |
-| `...props`  | `React.ComponentProps<'textarea'>`        | -       | All standard textarea props (value, onChange, rows, etc.)   |
+| Prop        | Type                               | Default | Description                                               |
+| ----------- | ---------------------------------- | ------- | --------------------------------------------------------- |
+| `className` | `string`                           | -       | Additional CSS classes                                    |
+| `...props`  | `React.ComponentProps<'textarea'>` | -       | All standard textarea props (value, onChange, rows, etc.) |
 
 ## Examples
 
@@ -52,10 +52,7 @@ import { Textarea } from '@subbiah/reusable/components/ui/textarea';
 ### Example 2: Fixed Rows Textarea
 
 ```tsx
-<Textarea
-  rows={5}
-  placeholder="Enter your comment"
-/>
+<Textarea rows={5} placeholder="Enter your comment" />
 ```
 
 **Visual:**
@@ -65,11 +62,7 @@ import { Textarea } from '@subbiah/reusable/components/ui/textarea';
 ### Example 3: Non-resizable Textarea
 
 ```tsx
-<Textarea
-  className="resize-none"
-  placeholder="Fixed size textarea"
-  rows={4}
-/>
+<Textarea className="resize-none" placeholder="Fixed size textarea" rows={4} />
 ```
 
 **Visual:**
@@ -79,10 +72,7 @@ import { Textarea } from '@subbiah/reusable/components/ui/textarea';
 ### Example 4: Disabled Textarea
 
 ```tsx
-<Textarea
-  value="This content cannot be edited"
-  disabled
-/>
+<Textarea value="This content cannot be edited" disabled />
 ```
 
 **Visual:**
@@ -102,10 +92,10 @@ const maxLength = 500;
     maxLength={maxLength}
     placeholder="Enter your thoughts..."
   />
-  <p className="text-sm text-muted-foreground text-right">
+  <p className="text-muted-foreground text-right text-sm">
     {text.length}/{maxLength}
   </p>
-</div>
+</div>;
 ```
 
 **Visual:**
@@ -117,11 +107,7 @@ const maxLength = 500;
 ```tsx
 <div className="space-y-2">
   <Label htmlFor="message">Message</Label>
-  <Textarea
-    id="message"
-    placeholder="Type your message here"
-    required
-  />
+  <Textarea id="message" placeholder="Type your message here" required />
 </div>
 ```
 
@@ -132,10 +118,7 @@ const maxLength = 500;
 ### Example 7: Auto-growing Textarea
 
 ```tsx
-<Textarea
-  className="min-h-[100px] max-h-[300px]"
-  placeholder="This textarea has a max height"
-/>
+<Textarea className="max-h-[300px] min-h-[100px]" placeholder="This textarea has a max height" />
 ```
 
 **Visual:**
@@ -155,10 +138,7 @@ const maxLength = 500;
 ## TypeScript
 
 ```tsx
-const Textarea = React.forwardRef<
-  HTMLTextAreaElement,
-  React.ComponentProps<'textarea'>
->
+const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<'textarea'>>;
 ```
 
 ## Notes

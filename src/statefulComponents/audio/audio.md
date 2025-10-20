@@ -50,9 +50,9 @@ Provider component that manages audio state and click sound playback.
 
 **Props:**
 
-| Prop       | Type         | Description                |
-| ---------- | ------------ | -------------------------- |
-| `children` | `ReactNode`  | **Required**. App content  |
+| Prop       | Type        | Description               |
+| ---------- | ----------- | ------------------------- |
+| `children` | `ReactNode` | **Required**. App content |
 
 ### AudioToggle
 
@@ -82,7 +82,7 @@ import { AudioToggle } from '@subbiah/reusable/statefulComponents/audio/toggle';
 
 function Header() {
   return (
-    <header className="flex justify-between items-center p-4">
+    <header className="flex items-center justify-between p-4">
       <h1>My App</h1>
       <AudioToggle />
     </header>
@@ -102,11 +102,7 @@ import { useAudioContext } from '@subbiah/reusable/statefulComponents/audio/prov
 function AudioIndicator() {
   const { isMuted } = useAudioContext();
 
-  return (
-    <div>
-      Audio: {isMuted ? 'Muted 🔇' : 'On 🔊'}
-    </div>
-  );
+  return <div>Audio: {isMuted ? 'Muted 🔇' : 'On 🔊'}</div>;
 }
 ```
 
@@ -125,11 +121,7 @@ function Settings() {
   return (
     <div>
       <label>
-        <input
-          type="checkbox"
-          checked={!isMuted}
-          onChange={toggleMute}
-        />
+        <input type="checkbox" checked={!isMuted} onChange={toggleMute} />
         Enable click sounds
       </label>
     </div>
@@ -150,10 +142,7 @@ function CustomAudioToggle() {
   const { isMuted, toggleMute } = useAudioContext();
 
   return (
-    <button
-      onClick={toggleMute}
-      className="px-4 py-2 rounded-lg border"
-    >
+    <button onClick={toggleMute} className="rounded-lg border px-4 py-2">
       {isMuted ? '🔇 Enable Sound' : '🔊 Mute Sound'}
     </button>
   );
@@ -209,6 +198,7 @@ When any element is clicked (and audio is unmuted):
 **Visual:**
 
 > Circular button (rounded-full), outline variant, icon size (h-5 w-5), includes transition-colors
+>
 > - Unmuted: Shows Volume2 icon (speaker with sound waves)
 > - Muted: Shows VolumeX icon (speaker with X)
 > - Has aria-label for accessibility

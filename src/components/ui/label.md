@@ -28,11 +28,11 @@ import { Label } from '@subbiah/reusable/components/ui/label';
 
 ## Props
 
-| Prop        | Type                                                      | Default | Description                                   |
-| ----------- | --------------------------------------------------------- | ------- | --------------------------------------------- |
-| `htmlFor`   | `string`                                                  | -       | ID of the associated form element             |
-| `className` | `string`                                                  | -       | Additional CSS classes                        |
-| `...props`  | `React.ComponentPropsWithoutRef<typeof LabelPrimitive>`   | -       | All Radix Label primitive props               |
+| Prop        | Type                                                    | Default | Description                       |
+| ----------- | ------------------------------------------------------- | ------- | --------------------------------- |
+| `htmlFor`   | `string`                                                | -       | ID of the associated form element |
+| `className` | `string`                                                | -       | Additional CSS classes            |
+| `...props`  | `React.ComponentPropsWithoutRef<typeof LabelPrimitive>` | -       | All Radix Label primitive props   |
 
 ## Examples
 
@@ -92,13 +92,9 @@ import { Label } from '@subbiah/reusable/components/ui/label';
 
 ```tsx
 <div className="space-y-2">
-  <Label htmlFor="password">
-    Password
-  </Label>
+  <Label htmlFor="password">Password</Label>
   <Input id="password" type="password" />
-  <p className="text-sm text-muted-foreground">
-    Must be at least 8 characters
-  </p>
+  <p className="text-muted-foreground text-sm">Must be at least 8 characters</p>
 </div>
 ```
 
@@ -137,9 +133,8 @@ import { Label } from '@subbiah/reusable/components/ui/label';
 ```tsx
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-    VariantProps<typeof labelVariants>
->
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & VariantProps<typeof labelVariants>
+>;
 ```
 
 ## Notes

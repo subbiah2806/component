@@ -27,12 +27,12 @@ import { Separator } from '@subbiah/reusable/components/ui/separator';
 
 ## Props
 
-| Prop          | Type                                                        | Default        | Description                                       |
-| ------------- | ----------------------------------------------------------- | -------------- | ------------------------------------------------- |
-| `orientation` | `"horizontal" \| "vertical"`                                | `"horizontal"` | Direction of the separator                        |
-| `decorative`  | `boolean`                                                   | `true`         | Whether the separator is purely decorative        |
-| `className`   | `string`                                                    | -              | Additional CSS classes                            |
-| `...props`    | `React.ComponentPropsWithoutRef<typeof SeparatorPrimitive>` | -              | All Radix Separator primitive props               |
+| Prop          | Type                                                        | Default        | Description                                |
+| ------------- | ----------------------------------------------------------- | -------------- | ------------------------------------------ |
+| `orientation` | `"horizontal" \| "vertical"`                                | `"horizontal"` | Direction of the separator                 |
+| `decorative`  | `boolean`                                                   | `true`         | Whether the separator is purely decorative |
+| `className`   | `string`                                                    | -              | Additional CSS classes                     |
+| `...props`    | `React.ComponentPropsWithoutRef<typeof SeparatorPrimitive>` | -              | All Radix Separator primitive props        |
 
 ## Variants
 
@@ -81,7 +81,7 @@ import { Separator } from '@subbiah/reusable/components/ui/separator';
 ### Example 2: Vertical Menu Divider
 
 ```tsx
-<div className="flex items-center h-8 space-x-4">
+<div className="flex h-8 items-center space-x-4">
   <Button variant="ghost">Home</Button>
   <Separator orientation="vertical" />
   <Button variant="ghost">About</Button>
@@ -117,13 +117,21 @@ import { Separator } from '@subbiah/reusable/components/ui/separator';
 ```tsx
 <nav className="w-64 p-4">
   <div className="space-y-2">
-    <Button variant="ghost" className="w-full justify-start">Dashboard</Button>
-    <Button variant="ghost" className="w-full justify-start">Projects</Button>
+    <Button variant="ghost" className="w-full justify-start">
+      Dashboard
+    </Button>
+    <Button variant="ghost" className="w-full justify-start">
+      Projects
+    </Button>
   </div>
   <Separator className="my-4" />
   <div className="space-y-2">
-    <Button variant="ghost" className="w-full justify-start">Settings</Button>
-    <Button variant="ghost" className="w-full justify-start">Logout</Button>
+    <Button variant="ghost" className="w-full justify-start">
+      Settings
+    </Button>
+    <Button variant="ghost" className="w-full justify-start">
+      Logout
+    </Button>
   </div>
 </nav>
 ```
@@ -170,7 +178,7 @@ import { Separator } from '@subbiah/reusable/components/ui/separator';
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
->
+>;
 ```
 
 ## Notes

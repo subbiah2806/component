@@ -30,10 +30,10 @@ import ErrorBoundary from '@subbiah/reusable/components/ErrorBoundary';
 
 ## Props
 
-| Prop       | Type         | Default | Description                                            |
-| ---------- | ------------ | ------- | ------------------------------------------------------ |
-| `children` | `ReactNode`  | -       | **Required**. Components to wrap with error boundary   |
-| `isDev`    | `boolean`    | `false` | Show error details (error message and stack trace)     |
+| Prop       | Type        | Default | Description                                          |
+| ---------- | ----------- | ------- | ---------------------------------------------------- |
+| `children` | `ReactNode` | -       | **Required**. Components to wrap with error boundary |
+| `isDev`    | `boolean`   | `false` | Show error details (error message and stack trace)   |
 
 ## Examples
 
@@ -110,7 +110,7 @@ function BuggyComponent() {
 
 <ErrorBoundary isDev={true}>
   <BuggyComponent />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 **Visual:**

@@ -23,7 +23,7 @@ import {
   IconBriefcase,
   IconInbox,
   IconLoading,
-  IconSpinner
+  IconSpinner,
 } from '@subbiah/reusable/icons';
 ```
 
@@ -39,7 +39,7 @@ import {
 ## Basic Usage
 
 ```tsx
-<IconHome className="h-6 w-6 text-primary" />
+<IconHome className="text-primary h-6 w-6" />
 ```
 
 **Visual:**
@@ -50,10 +50,10 @@ import {
 
 All icon components accept:
 
-| Prop        | Type                            | Description                              |
-| ----------- | ------------------------------- | ---------------------------------------- |
-| `className` | `string`                        | Tailwind classes for size, color, etc.   |
-| `...props`  | `SVGProps<SVGSVGElement>`       | All standard SVG attributes              |
+| Prop        | Type                      | Description                            |
+| ----------- | ------------------------- | -------------------------------------- |
+| `className` | `string`                  | Tailwind classes for size, color, etc. |
+| `...props`  | `SVGProps<SVGSVGElement>` | All standard SVG attributes            |
 
 ## Icon Categories
 
@@ -205,7 +205,7 @@ import { IconLoading, IconSpinner } from '@subbiah/reusable/icons';
 ### Example 4: Icon Button
 
 ```tsx
-<button className="p-2 rounded-full hover:bg-gray-100">
+<button className="rounded-full p-2 hover:bg-gray-100">
   <IconClose className="h-5 w-5" />
 </button>
 ```
@@ -218,7 +218,7 @@ import { IconLoading, IconSpinner } from '@subbiah/reusable/icons';
 
 ```tsx
 <div className="flex items-center gap-2">
-  <IconLoading className="h-5 w-5 animate-spin text-primary" />
+  <IconLoading className="text-primary h-5 w-5 animate-spin" />
   <span>Loading...</span>
 </div>
 ```
@@ -247,7 +247,7 @@ import { IconLoading, IconSpinner } from '@subbiah/reusable/icons';
 ### Example 7: Status Badge
 
 ```tsx
-<div className="flex items-center gap-2 bg-green-100 px-3 py-1 rounded-full">
+<div className="flex items-center gap-2 rounded-full bg-green-100 px-3 py-1">
   <IconCheckCircle className="h-4 w-4 text-green-600" />
   <span className="text-sm text-green-800">Complete</span>
 </div>
@@ -260,7 +260,7 @@ import { IconLoading, IconSpinner } from '@subbiah/reusable/icons';
 ### Example 8: Icon with Animation
 
 ```tsx
-<IconSpinner className="h-8 w-8 animate-spin text-primary" />
+<IconSpinner className="text-primary h-8 w-8 animate-spin" />
 ```
 
 **Visual:**
@@ -300,21 +300,21 @@ import { IconLoading, IconSpinner } from '@subbiah/reusable/icons';
 import { SVGProps } from 'react';
 
 // All icon components have this signature
-function Icon(props: SVGProps<SVGSVGElement>): JSX.Element
+function Icon(props: SVGProps<SVGSVGElement>): JSX.Element;
 
 // Usage with typed props
 const iconProps: SVGProps<SVGSVGElement> = {
   className: 'h-6 w-6 text-blue-500',
-  'aria-label': 'Home icon'
+  'aria-label': 'Home icon',
 };
 
-<IconHome {...iconProps} />
+<IconHome {...iconProps} />;
 ```
 
 ## Notes
 
 - Width and height default to `1em` (scales with font-size)
-- Use className to set explicit size (h-* w-*)
+- Use className to set explicit size (h-_ w-_)
 - ViewBox is `0 0 24 24` for all icons
 - Default stroke width is 2px
 - Stroke linecap and linejoin are rounded

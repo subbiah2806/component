@@ -28,13 +28,13 @@ import { Button } from '@subbiah/reusable/components/ui/button';
 
 ## Props
 
-| Prop        | Type                                                                                  | Default     | Description                                                   |
-| ----------- | ------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------- |
-| `variant`   | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"`         | `"default"` | Visual style variant                                          |
-| `size`      | `"default" \| "sm" \| "lg" \| "icon"`                                                 | `"default"` | Button size                                                   |
-| `asChild`   | `boolean`                                                                             | `false`     | Render as child component (uses Radix Slot)                   |
-| `className` | `string`                                                                              | -           | Additional CSS classes                                        |
-| `...props`  | `React.ButtonHTMLAttributes<HTMLButtonElement>`                                       | -           | All standard button props (onClick, disabled, type, etc.)     |
+| Prop        | Type                                                                          | Default     | Description                                               |
+| ----------- | ----------------------------------------------------------------------------- | ----------- | --------------------------------------------------------- |
+| `variant`   | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"default"` | Visual style variant                                      |
+| `size`      | `"default" \| "sm" \| "lg" \| "icon"`                                         | `"default"` | Button size                                               |
+| `asChild`   | `boolean`                                                                     | `false`     | Render as child component (uses Radix Slot)               |
+| `className` | `string`                                                                      | -           | Additional CSS classes                                    |
+| `...props`  | `React.ButtonHTMLAttributes<HTMLButtonElement>`                               | -           | All standard button props (onClick, disabled, type, etc.) |
 
 ## Variants
 
@@ -152,7 +152,7 @@ import { Download } from 'lucide-react';
 <Button>
   <Download className="h-4 w-4" />
   Download
-</Button>
+</Button>;
 ```
 
 **Visual:**
@@ -167,7 +167,7 @@ import { Loader2 } from 'lucide-react';
 <Button disabled>
   <Loader2 className="h-4 w-4 animate-spin" />
   Loading...
-</Button>
+</Button>;
 ```
 
 **Visual:**
@@ -181,7 +181,7 @@ import { Link } from 'react-router-dom';
 
 <Button asChild>
   <Link to="/dashboard">Go to Dashboard</Link>
-</Button>
+</Button>;
 ```
 
 **Visual:**
@@ -195,7 +195,7 @@ import { Settings } from 'lucide-react';
 
 <Button variant="ghost" size="icon">
   <Settings className="h-5 w-5" />
-</Button>
+</Button>;
 ```
 
 **Visual:**

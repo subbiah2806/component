@@ -28,11 +28,11 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 
 ## Props
 
-| Prop        | Type                                      | Default  | Description                                              |
-| ----------- | ----------------------------------------- | -------- | -------------------------------------------------------- |
-| `type`      | `string`                                  | `"text"` | HTML input type (text, email, password, number, etc.)    |
-| `className` | `string`                                  | -        | Additional CSS classes                                   |
-| `...props`  | `React.ComponentProps<'input'>`           | -        | All standard input props (value, onChange, disabled etc) |
+| Prop        | Type                            | Default  | Description                                              |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------- |
+| `type`      | `string`                        | `"text"` | HTML input type (text, email, password, number, etc.)    |
+| `className` | `string`                        | -        | Additional CSS classes                                   |
+| `...props`  | `React.ComponentProps<'input'>` | -        | All standard input props (value, onChange, disabled etc) |
 
 ## Examples
 
@@ -54,11 +54,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ### Example 2: Password Input
 
 ```tsx
-<Input
-  type="password"
-  placeholder="Enter password"
-  required
-/>
+<Input type="password" placeholder="Enter password" required />
 ```
 
 **Visual:**
@@ -68,12 +64,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ### Example 3: Number Input
 
 ```tsx
-<Input
-  type="number"
-  placeholder="Age"
-  min={0}
-  max={120}
-/>
+<Input type="number" placeholder="Age" min={0} max={120} />
 ```
 
 **Visual:**
@@ -98,11 +89,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ### Example 5: Disabled Input
 
 ```tsx
-<Input
-  type="text"
-  value="Read Only Value"
-  disabled
-/>
+<Input type="text" value="Read Only Value" disabled />
 ```
 
 **Visual:**
@@ -112,11 +99,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ### Example 6: File Input
 
 ```tsx
-<Input
-  type="file"
-  accept="image/*"
-  onChange={(e) => handleFileUpload(e.target.files)}
-/>
+<Input type="file" accept="image/*" onChange={(e) => handleFileUpload(e.target.files)} />
 ```
 
 **Visual:**
@@ -126,11 +109,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ### Example 7: Search Input
 
 ```tsx
-<Input
-  type="search"
-  placeholder="Search..."
-  className="pr-10"
-/>
+<Input type="search" placeholder="Search..." className="pr-10" />
 ```
 
 **Visual:**
@@ -142,11 +121,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ```tsx
 <div className="space-y-2">
   <Label htmlFor="username">Username</Label>
-  <Input
-    id="username"
-    type="text"
-    placeholder="johndoe"
-  />
+  <Input id="username" type="text" placeholder="johndoe" />
 </div>
 ```
 
@@ -166,10 +141,7 @@ import { Input } from '@subbiah/reusable/components/ui/input';
 ## TypeScript
 
 ```tsx
-const Input = React.forwardRef<
-  HTMLInputElement,
-  React.ComponentProps<'input'>
->
+const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>;
 ```
 
 ## Notes
