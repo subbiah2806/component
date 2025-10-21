@@ -59,7 +59,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background via-background to-secondary px-4">
+        <div className="flex min-h-screen items-center justify-center px-4">
           <div className="w-full max-w-2xl rounded-xl border bg-card p-8 backdrop-blur-sm">
             {/* Error Icon */}
             <div className="mb-6 flex justify-center">
