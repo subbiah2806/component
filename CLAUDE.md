@@ -113,3 +113,176 @@ If components aren't loading:
 4. Ensure proper dependencies are installed
 
 **Documentation**: https://ui.shadcn.com/docs/mcp
+
+## Creative Components & Code Inspiration
+
+### ReactBits.dev
+
+For creative and advanced component implementations, extract code from **https://reactbits.dev/**
+
+**Usage:**
+
+- Browse ReactBits.dev for creative component patterns and implementations
+- Extract relevant code snippets for inspiration
+- Adapt code to match this library's tech stack (React 19, TypeScript, Tailwind CSS)
+- Ensure components follow shadcn/ui patterns and conventions
+- Update documentation after adding new creative components
+
+**When to use ReactBits.dev:**
+
+- Need creative UI patterns (animations, interactions, layouts)
+- Looking for advanced component implementations
+- Want modern React patterns and best practices
+- Seeking design inspiration for custom components
+
+**Adding ReactBits components:**
+
+```bash
+npx shadcn@latest add https://reactbits.dev/r/[component-name]
+```
+
+### Aceternity UI
+
+Beautiful, modern UI components with animations and effects from **https://ui.aceternity.com/components**
+
+**Usage:**
+
+- Browse Aceternity UI for premium-quality animated components
+- Components include: 3D cards, particle effects, aurora backgrounds, animated tabs, etc.
+- All components are built with React, TypeScript, Tailwind CSS, and Framer Motion
+- Copy-paste ready components with excellent documentation
+
+**When to use Aceternity UI:**
+
+- Need stunning visual effects and animations
+- Building landing pages or marketing sites
+- Want premium-looking UI components
+- Looking for modern, eye-catching interactions
+
+**Installation:**
+
+- Visit https://ui.aceternity.com/components
+- Browse component gallery
+- Copy component code and adapt to library structure
+- Install required dependencies (usually includes `framer-motion`)
+
+### Third-Party shadcn/ui Registries
+
+CLI-compatible third-party registries you can add to `components.json`:
+
+#### Official Third-Party Registries
+
+1. **Magic UI** - https://magicui.design
+   - 150+ free and open-source animated components
+   - Focus: Landing pages, marketing sites, animations
+   - Registry: Can be added via namespace configuration
+
+2. **Aceternity UI** - https://ui.aceternity.com
+   - Beautiful components with Tailwind CSS and Framer Motion
+   - Focus: Premium animated components, 3D effects, particle effects
+   - Already documented in this file (see Aceternity UI section above)
+
+3. **Shadcn Blocks** - https://www.shadcnblocks.com
+   - Premium collection of 631+ uniquely crafted blocks and components
+   - Focus: Pre-built sections, authentication support for private registries
+   - Registry: Supports namespaced registries with API key authentication
+
+4. **Origin UI** - https://originui.com
+   - Advanced component set beyond original shadcn/ui
+   - Focus: Extended functionality, complex components
+   - Registry: CLI compatible
+
+5. **Cult UI** - https://cult-ui.com
+   - Apple OS-inspired components with bold designs
+   - Focus: MacOS/iOS aesthetic, premium design
+   - Registry: CLI compatible
+
+6. **Kokonut UI** - https://kokonutui.com
+   - 100+ UI components built with Tailwind CSS
+   - Focus: Comprehensive component library
+   - Registry: CLI compatible
+
+7. **Neobrutalism Components** - https://neobrutalism.dev
+   - Collection in neo-brutalism style
+   - Focus: Bold, brutalist design aesthetic
+   - Registry: CLI compatible
+
+#### Configuring Multiple Registries
+
+Add registries to `components.json` using namespaces:
+
+```json
+{
+  "registries": {
+    "@magicui": "https://magicui.design/r/{name}",
+    "@originui": "https://originui.com/r/{name}",
+    "@cultui": "https://cult-ui.com/r/{name}"
+  }
+}
+```
+
+**With Authentication (Private Registries):**
+
+```json
+{
+  "registries": {
+    "@private": {
+      "url": "https://api.company.com/registry/{name}.json",
+      "headers": {
+        "Authorization": "Bearer ${REGISTRY_TOKEN}",
+        "X-API-Key": "${API_KEY}"
+      }
+    }
+  }
+}
+```
+
+**Installing from Namespaced Registries:**
+
+```bash
+npx shadcn@latest add @magicui/animated-beam
+npx shadcn@latest add @originui/advanced-table
+npx shadcn@latest add @cultui/dock
+```
+
+### Awesome shadcn/ui
+
+Curated list of resources, components, and extensions from **https://github.com/birobirobiro/awesome-shadcn-ui**
+
+**What's included:**
+
+- **Component Libraries**: Third-party shadcn/ui compatible component collections
+- **Templates & Starters**: Pre-built projects using shadcn/ui
+- **Themes**: Color schemes and design systems
+- **Tools**: Utilities, generators, and development tools
+- **Learning Resources**: Tutorials, articles, and guides
+
+**Usage:**
+
+- Explore the GitHub repository for component discoveries
+- Find third-party registries and component libraries
+- Learn from real-world implementations
+- Discover tools to improve development workflow
+
+### Integration Guidelines
+
+**For all external components:**
+
+1. Extract/install component code
+2. Convert to TypeScript if needed (JSX → TSX)
+3. Adapt imports to use library's path structure
+4. Follow shadcn/ui component patterns
+5. Add proper TypeScript type definitions
+6. Ensure Tailwind CSS compatibility
+7. Test component functionality
+8. Document in `how_to_use_this_library.md`
+9. Run `/update-docs sync-changes` to update documentation (if available)
+
+**Quality checklist:**
+
+- ✅ TypeScript types properly defined
+- ✅ Responsive design implemented
+- ✅ Accessible (ARIA attributes, keyboard navigation)
+- ✅ Dark mode compatible
+- ✅ Dependencies documented
+- ✅ Usage examples provided

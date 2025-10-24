@@ -5,7 +5,7 @@ Complete documentation for the reusable component library built with React, Type
 ## Installation
 
 ```bash
-npm install @subbiah/reusable
+npm install github:subbiah2806/component
 ```
 
 **Peer Dependencies:** Requires React 19.2.0+ and Tailwind CSS 3.4.3+ (should already be in your project)
@@ -62,7 +62,7 @@ function App() {
 **Important:** `InitializeReusableChunks` automatically:
 
 - Imports all necessary styles (`@subbiah/reusable/styles`)
-- Initializes **Providers** for global audio feedback
+- Initializes **Providers** for statefulComponents
 
 You **do not** need to manually wrap your app with these providers - they are already included!
 
