@@ -1,7 +1,7 @@
 import { Component, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
-  children: ReactNode;
+  children?: ReactNode;
   isDev?: boolean;
 }
 
@@ -54,6 +54,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       error: null,
       errorInfo: null,
     });
+  };
+
+  getHomeUrl = (): string => {
+    // Check if URL contains github.io (GitHub Pages)
+    if (window.location.hostname.includes('github.io')) {
+      // Extract the base path (e.g., /portfolio from https://subbiah2806.github.io/portfolio/chat)
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      if (pathSegments.length > 0) {
+        // Return base URL with first path segment (e.g., https://subbiah2806.github.io/portfolio/)
+        return `${window.location.origin}/${pathSegments[0]}/`;
+      }
+    }
+    // Default to root for non-GitHub Pages deployments
+    return '/';
   };
 
   render(): ReactNode {
@@ -121,7 +135,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 Try Again
               </button>
               <button
-                onClick={() => (window.location.href = '/')}
+                onClick={() => (window.location.href = this.getHomeUrl())}
                 className="rounded-lg border bg-card px-6 py-3 font-semibold text-card-foreground backdrop-blur-sm transition-all duration-300 hover:bg-card/50"
               >
                 Go to Home
