@@ -2,7 +2,7 @@
 
 Reusable component library built with React, TypeScript, and Tailwind CSS. This is a sharable npm package used across multiple projects.
 
-**IMPORTANT**: Any changes inside ./src triggers `/update-docs sync-changes` - Update docs of all files that got changed.
+**IMPORTANT**: Any changes inside ./src triggers `/update-component-docs sync-changes` - Update docs of all files that got changed.
 
 ## Tech Stack
 

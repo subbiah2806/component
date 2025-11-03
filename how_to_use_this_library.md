@@ -85,6 +85,7 @@ Located in `@subbiah/reusable/components/ui/`
 - **[Separator](./src/components/ui/separator.md)** - Visual divider for horizontal or vertical separation
 - **[Skeleton](./src/components/ui/skeleton.md)** - Loading placeholder with pulse animation
 - **[Sheet](./src/components/ui/sheet.md)** - Modal drawer/sheet with slide-in animations from four directions
+- **[Dropdown Menu](./src/components/ui/dropdown-menu.md)** - Versatile dropdown menu with items, checkboxes, radio groups, and nested submenus
 - **[Form](./src/components/ui/form/form.md)** - Complete form management with React Hook Form integration
 
 ### Stateful Components
