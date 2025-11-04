@@ -109,6 +109,7 @@ Located in `@subbiah/reusable/statefulComponents/`
 ### Utilities
 
 - **[Utility Functions](./src/lib/utils.md)** - Helper functions including `cn()` for class name merging
+- **[Resume Generator](./src/lib/generateResume.md)** - ATS-friendly resume generator for DOCX and PDF formats
 
 ### Styles
 
