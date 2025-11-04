@@ -25,7 +25,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 export type ResumeFormat = 'docx' | 'pdf';
 
-interface ResumeData {
+export interface ResumeData {
   firstName: string;
   lastName: string;
   email: string;
@@ -41,7 +41,7 @@ interface ResumeData {
   education: Education[];
 }
 
-interface Experience {
+export interface Experience {
   company: string;
   location: string;
   position: string;
@@ -51,7 +51,7 @@ interface Experience {
   companyDescription?: string;
 }
 
-interface Education {
+export interface Education {
   institution: string;
   degree: string;
   dates: string;
@@ -528,21 +528,58 @@ export async function generateResumeDocx(resumeData: ResumeData): Promise<void> 
 }
 
 /**
+ * Download resume in specified format
+ * Convenience wrapper that calls the appropriate generator based on format
+ */
+export async function downloadResume(
+  resumeData: ResumeData,
+  format: ResumeFormat = 'docx'
+): Promise<void> {
+  if (format === 'pdf') {
+    await generateResumePdf(resumeData);
+  } else {
+    await generateResumeDocx(resumeData);
+  }
+}
+
+const headingMargin = [0, 10, 0, 0];
+const lineMargin = [0, 0, 0, 6];
+const textMargin = [0, 0, 0, 0];
+const listMargin = [10, 0, 0, 0];
+
+/**
  * Generate resume PDF from JSON data with same formatting as DOCX using pdfmake
  */
 export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
   try {
-    // Build contact line
-    const contactParts: string[] = [];
+    // Build contact line with clickable links
+    const contactParts: Array<{ text: string; link?: string }> = [];
     if (resumeData.preferredLocations && resumeData.preferredLocations.length > 0) {
-      contactParts.push(resumeData.preferredLocations[0]);
+      contactParts.push({ text: resumeData.preferredLocations[0] });
     }
-    if (resumeData.phone) contactParts.push(resumeData.phone);
-    if (resumeData.email) contactParts.push(resumeData.email);
-    if (resumeData.github) contactParts.push('GitHub');
-    if (resumeData.linkedin) contactParts.push('LinkedIn');
-    if (resumeData.website) contactParts.push('Portfolio');
-    if (resumeData.visaStatus) contactParts.push(resumeData.visaStatus);
+    if (resumeData.phone) contactParts.push({ text: resumeData.phone });
+    if (resumeData.email) {
+      contactParts.push({ text: resumeData.email, link: `mailto:${resumeData.email}` });
+    }
+    if (resumeData.github) {
+      contactParts.push({ text: 'GitHub', link: resumeData.github });
+    }
+    if (resumeData.linkedin) {
+      contactParts.push({ text: 'LinkedIn', link: resumeData.linkedin });
+    }
+    if (resumeData.website) {
+      contactParts.push({ text: 'Portfolio', link: resumeData.website });
+    }
+    if (resumeData.visaStatus) contactParts.push({ text: resumeData.visaStatus });
+
+    // Create contact text array with separators
+    const contactTextArray: Array<{ text: string; link?: string }> = [];
+    contactParts.forEach((part, idx) => {
+      if (idx > 0) {
+        contactTextArray.push({ text: ' | ' });
+      }
+      contactTextArray.push(part);
+    });
 
     // Build skills section
     const skillsContent: Record<string, unknown>[] = [];
@@ -561,15 +598,16 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
       skillsContent.length > 0
         ? {
             ul: skillsContent,
-            margin: [10, 0, 0, 0], // 10pt left indent for bullet list
+            margin: listMargin, // 10pt left indent for bullet list
           }
         : null;
 
     // Build experience section
     const experienceContent: Record<string, unknown>[] = [];
-    for (const exp of resumeData.experience) {
+    resumeData.experience.forEach((exp, index) => {
       const location = exp.location || 'Remote';
       const dateRange = formatDateRange(exp.startDate, exp.endDate);
+      const isLastExperience = index === resumeData.experience.length - 1;
 
       // Company and location
       experienceContent.push({
@@ -577,7 +615,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
           { text: exp.company, bold: true, fontSize: 10 },
           { text: location, bold: true, fontSize: 10, alignment: 'right' },
         ],
-        margin: [0, 10, 0, 1],
+        margin: [0, 0, 0, 1],
       });
 
       // Position and dates
@@ -614,10 +652,10 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
       if (expItems.length > 0) {
         experienceContent.push({
           ul: expItems,
-          margin: [10, 0, 0, 3], // 10pt left indent for bullet list
+          margin: isLastExperience ? listMargin : [...listMargin.slice(0, -1), 8],
         });
       }
-    }
+    });
 
     // Build education section
     const educationContent: Record<string, unknown>[] = [];
@@ -652,17 +690,17 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
         },
         // Contact
         {
-          text: contactParts.join(' | '),
+          text: contactTextArray,
           fontSize: 10,
           alignment: 'center',
-          margin: [0, 0, 0, 10],
+          margin: textMargin,
         },
         // Professional Summary
         {
           text: 'PROFESSIONAL SUMMARY',
           fontSize: 16,
           bold: true,
-          margin: [0, 10, 0, 0],
+          margin: headingMargin,
         },
         {
           canvas: [
@@ -675,20 +713,20 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
               lineWidth: 0.5,
             },
           ],
-          margin: [0, 0, 0, 6],
+          margin: lineMargin,
         },
         {
           text: resumeData.summary,
           fontSize: 10,
           alignment: 'justify',
-          margin: [0, 0, 0, 8],
+          margin: textMargin,
         },
         // Skills
         {
           text: 'SKILLS',
           fontSize: 16,
           bold: true,
-          margin: [0, 10, 0, 0],
+          margin: headingMargin,
         },
         {
           canvas: [
@@ -701,7 +739,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
               lineWidth: 0.5,
             },
           ],
-          margin: [0, 0, 0, 6],
+          margin: lineMargin,
         },
         skillsList,
         // Professional Experience
@@ -709,7 +747,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
           text: 'PROFESSIONAL EXPERIENCE',
           fontSize: 16,
           bold: true,
-          margin: [0, 10, 0, 0],
+          margin: headingMargin,
         },
         {
           canvas: [
@@ -722,7 +760,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
               lineWidth: 0.5,
             },
           ],
-          margin: [0, 0, 0, 6],
+          margin: lineMargin,
         },
         ...experienceContent,
         // Education
@@ -730,8 +768,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
           text: 'EDUCATION',
           fontSize: 16,
           bold: true,
-          margin: [0, 10, 0, 0],
-          pageBreak: experienceContent.length > 10 ? 'before' : undefined,
+          margin: headingMargin,
         },
         {
           canvas: [
@@ -744,7 +781,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
               lineWidth: 0.5,
             },
           ],
-          margin: [0, 0, 0, 6],
+          margin: lineMargin,
         },
         ...educationContent,
       ].filter((item) => item !== null),
@@ -756,35 +793,6 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
     console.log('✅ Resume PDF generated successfully');
   } catch (error) {
     console.error('❌ Error generating PDF resume:', error);
-    throw error;
-  }
-}
-
-/**
- * Load resume data from public folder and generate document in specified format
- */
-export async function downloadResume(format: ResumeFormat = 'docx'): Promise<void> {
-  try {
-    const response = await fetch('/resume.json');
-    if (!response.ok) {
-      throw new Error('Failed to load resume.json');
-    }
-
-    const resumeData: ResumeData = await response.json();
-
-    // Remove metadata fields if present
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (resumeData as any).uploadedAt;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (resumeData as any).lastModified;
-
-    if (format === 'pdf') {
-      await generateResumePdf(resumeData);
-    } else {
-      await generateResumeDocx(resumeData);
-    }
-  } catch (error) {
-    console.error('Failed to download resume:', error);
     throw error;
   }
 }
