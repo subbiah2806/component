@@ -15,9 +15,8 @@ import {
   Packer,
   ExternalHyperlink,
 } from 'docx';
-import { saveAs } from 'file-saver';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfMake from 'pdfmake/build/pdfmake.js';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 
 // Set up fonts for pdfMake
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -484,9 +483,9 @@ function createEducation(education: Education[]): Paragraph[] {
 }
 
 /**
- * Generate resume DOCX from JSON data
+ * Generate resume DOCX from JSON data and return blob
  */
-export async function generateResumeDocx(resumeData: ResumeData): Promise<void> {
+export async function generateResumeDocx(resumeData: ResumeData): Promise<Blob> {
   try {
     // Build all sections
     const sections: Paragraph[] = [
@@ -516,11 +515,10 @@ export async function generateResumeDocx(resumeData: ResumeData): Promise<void> 
       ],
     });
 
-    // Generate blob and download
+    // Generate blob and return
     const blob = await Packer.toBlob(doc);
-    saveAs(blob, 'Subbiah_Chandramouli_Resume.docx');
-
     console.log('✅ Resume DOCX generated successfully');
+    return blob;
   } catch (error) {
     console.error('❌ Error generating resume:', error);
     throw error;
@@ -528,18 +526,21 @@ export async function generateResumeDocx(resumeData: ResumeData): Promise<void> 
 }
 
 /**
- * Download resume in specified format
+ * Download resume in specified format (for browser use)
  * Convenience wrapper that calls the appropriate generator based on format
  */
 export async function downloadResume(
   resumeData: ResumeData,
   format: ResumeFormat = 'docx'
 ): Promise<void> {
+  let blob;
   if (format === 'pdf') {
-    await generateResumePdf(resumeData);
+    blob = await generateResumePdf(resumeData);
   } else {
-    await generateResumeDocx(resumeData);
+    blob = await generateResumeDocx(resumeData);
   }
+  const { saveAs } = await import('file-saver');
+  saveAs(blob, `Subbiah_Chandramouli_Resume.${format}`);
 }
 
 const headingMargin = [0, 10, 0, 0];
@@ -548,251 +549,255 @@ const textMargin = [0, 0, 0, 0];
 const listMargin = [10, 0, 0, 0];
 
 /**
- * Generate resume PDF from JSON data with same formatting as DOCX using pdfmake
+ * Generate resume PDF from JSON data and return blob
  */
-export async function generateResumePdf(resumeData: ResumeData): Promise<void> {
-  try {
-    // Build contact line with clickable links
-    const contactParts: Array<{ text: string; link?: string }> = [];
-    if (resumeData.preferredLocations && resumeData.preferredLocations.length > 0) {
-      contactParts.push({ text: resumeData.preferredLocations[0] });
-    }
-    if (resumeData.phone) contactParts.push({ text: resumeData.phone });
-    if (resumeData.email) {
-      contactParts.push({ text: resumeData.email, link: `mailto:${resumeData.email}` });
-    }
-    if (resumeData.github) {
-      contactParts.push({ text: 'GitHub', link: resumeData.github });
-    }
-    if (resumeData.linkedin) {
-      contactParts.push({ text: 'LinkedIn', link: resumeData.linkedin });
-    }
-    if (resumeData.website) {
-      contactParts.push({ text: 'Portfolio', link: resumeData.website });
-    }
-    if (resumeData.visaStatus) contactParts.push({ text: resumeData.visaStatus });
-
-    // Create contact text array with separators
-    const contactTextArray: Array<{ text: string; link?: string }> = [];
-    contactParts.forEach((part, idx) => {
-      if (idx > 0) {
-        contactTextArray.push({ text: ' | ' });
+export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    try {
+      // Build contact line with clickable links
+      const contactParts: Array<{ text: string; link?: string }> = [];
+      if (resumeData.preferredLocations && resumeData.preferredLocations.length > 0) {
+        contactParts.push({ text: resumeData.preferredLocations[0] });
       }
-      contactTextArray.push(part);
-    });
+      if (resumeData.phone) contactParts.push({ text: resumeData.phone });
+      if (resumeData.email) {
+        contactParts.push({ text: resumeData.email, link: `mailto:${resumeData.email}` });
+      }
+      if (resumeData.github) {
+        contactParts.push({ text: 'GitHub', link: resumeData.github });
+      }
+      if (resumeData.linkedin) {
+        contactParts.push({ text: 'LinkedIn', link: resumeData.linkedin });
+      }
+      if (resumeData.website) {
+        contactParts.push({ text: 'Portfolio', link: resumeData.website });
+      }
+      if (resumeData.visaStatus) contactParts.push({ text: resumeData.visaStatus });
 
-    // Build skills section
-    const skillsContent: Record<string, unknown>[] = [];
-    for (const [category, skillsList] of Object.entries(resumeData.skills)) {
-      if (skillsList && skillsList.length > 0) {
-        skillsContent.push({
-          text: [{ text: `${category}: `, bold: true }, { text: skillsList.join(', ') }],
-          fontSize: 10,
+      // Create contact text array with separators
+      const contactTextArray: Array<{ text: string; link?: string }> = [];
+      contactParts.forEach((part, idx) => {
+        if (idx > 0) {
+          contactTextArray.push({ text: ' | ' });
+        }
+        contactTextArray.push(part);
+      });
+
+      // Build skills section
+      const skillsContent: Record<string, unknown>[] = [];
+      for (const [category, skillsList] of Object.entries(resumeData.skills)) {
+        if (skillsList && skillsList.length > 0) {
+          skillsContent.push({
+            text: [{ text: `${category}: `, bold: true }, { text: skillsList.join(', ') }],
+            fontSize: 10,
+            margin: [0, 0, 0, 2],
+          });
+        }
+      }
+
+      // Wrap skills in a list
+      const skillsList =
+        skillsContent.length > 0
+          ? {
+              ul: skillsContent,
+              margin: listMargin, // 10pt left indent for bullet list
+            }
+          : null;
+
+      // Build experience section
+      const experienceContent: Record<string, unknown>[] = [];
+      resumeData.experience.forEach((exp, index) => {
+        const location = exp.location || 'Remote';
+        const dateRange = formatDateRange(exp.startDate, exp.endDate);
+        const isLastExperience = index === resumeData.experience.length - 1;
+
+        // Company and location
+        experienceContent.push({
+          columns: [
+            { text: exp.company, bold: true, fontSize: 10 },
+            { text: location, bold: true, fontSize: 10, alignment: 'right' },
+          ],
+          margin: [0, 0, 0, 1],
+        });
+
+        // Position and dates
+        experienceContent.push({
+          columns: [
+            { text: exp.position, italics: true, fontSize: 10 },
+            { text: dateRange, italics: true, fontSize: 10, alignment: 'right' },
+          ],
+          margin: [0, 0, 0, 4],
+        });
+
+        // Build list items for this experience
+        const expItems: Record<string, unknown>[] = [];
+
+        // Company description
+        if (exp.companyDescription) {
+          expItems.push({
+            text: exp.companyDescription,
+            fontSize: 10,
+            alignment: 'justify',
+          });
+        }
+
+        // Achievements
+        for (const achievement of exp.achievements) {
+          expItems.push({
+            text: achievement,
+            fontSize: 10,
+            alignment: 'justify',
+          });
+        }
+
+        // Add as unordered list
+        if (expItems.length > 0) {
+          experienceContent.push({
+            ul: expItems,
+            margin: isLastExperience ? listMargin : [...listMargin.slice(0, -1), 8],
+          });
+        }
+      });
+
+      // Build education section
+      const educationContent: Record<string, unknown>[] = [];
+      for (const edu of resumeData.education) {
+        educationContent.push({
+          columns: [
+            {
+              text: [{ text: `${edu.degree}, `, bold: true }, { text: edu.institution }],
+              fontSize: 10,
+            },
+            { text: edu.dates, bold: true, fontSize: 10, alignment: 'right' },
+          ],
           margin: [0, 0, 0, 2],
         });
       }
-    }
 
-    // Wrap skills in a list
-    const skillsList =
-      skillsContent.length > 0
-        ? {
-            ul: skillsContent,
-            margin: listMargin, // 10pt left indent for bullet list
-          }
-        : null;
-
-    // Build experience section
-    const experienceContent: Record<string, unknown>[] = [];
-    resumeData.experience.forEach((exp, index) => {
-      const location = exp.location || 'Remote';
-      const dateRange = formatDateRange(exp.startDate, exp.endDate);
-      const isLastExperience = index === resumeData.experience.length - 1;
-
-      // Company and location
-      experienceContent.push({
-        columns: [
-          { text: exp.company, bold: true, fontSize: 10 },
-          { text: location, bold: true, fontSize: 10, alignment: 'right' },
-        ],
-        margin: [0, 0, 0, 1],
-      });
-
-      // Position and dates
-      experienceContent.push({
-        columns: [
-          { text: exp.position, italics: true, fontSize: 10 },
-          { text: dateRange, italics: true, fontSize: 10, alignment: 'right' },
-        ],
-        margin: [0, 0, 0, 4],
-      });
-
-      // Build list items for this experience
-      const expItems: Record<string, unknown>[] = [];
-
-      // Company description
-      if (exp.companyDescription) {
-        expItems.push({
-          text: exp.companyDescription,
-          fontSize: 10,
-          alignment: 'justify',
-        });
-      }
-
-      // Achievements
-      for (const achievement of exp.achievements) {
-        expItems.push({
-          text: achievement,
-          fontSize: 10,
-          alignment: 'justify',
-        });
-      }
-
-      // Add as unordered list
-      if (expItems.length > 0) {
-        experienceContent.push({
-          ul: expItems,
-          margin: isLastExperience ? listMargin : [...listMargin.slice(0, -1), 8],
-        });
-      }
-    });
-
-    // Build education section
-    const educationContent: Record<string, unknown>[] = [];
-    for (const edu of resumeData.education) {
-      educationContent.push({
-        columns: [
+      // Define document structure
+      const docDefinition: Record<string, unknown> = {
+        pageSize: 'LETTER',
+        pageMargins: [36, 36, 36, 36], // 0.5 inches = 36 points
+        defaultStyle: {
+          font: 'Roboto',
+        },
+        content: [
+          // Name
           {
-            text: [{ text: `${edu.degree}, `, bold: true }, { text: edu.institution }],
-            fontSize: 10,
+            text: `${resumeData.firstName.toUpperCase()} ${resumeData.lastName.toUpperCase()}`,
+            fontSize: 20,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 0, 0, 4],
           },
-          { text: edu.dates, bold: true, fontSize: 10, alignment: 'right' },
-        ],
-        margin: [0, 0, 0, 2],
+          // Contact
+          {
+            text: contactTextArray,
+            fontSize: 10,
+            alignment: 'center',
+            margin: textMargin,
+          },
+          // Professional Summary
+          {
+            text: 'PROFESSIONAL SUMMARY',
+            fontSize: 16,
+            bold: true,
+            margin: headingMargin,
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 3,
+                x2: 540,
+                y2: 3,
+                lineWidth: 0.5,
+              },
+            ],
+            margin: lineMargin,
+          },
+          {
+            text: resumeData.summary,
+            fontSize: 10,
+            alignment: 'justify',
+            margin: textMargin,
+          },
+          // Skills
+          {
+            text: 'SKILLS',
+            fontSize: 16,
+            bold: true,
+            margin: headingMargin,
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 3,
+                x2: 540,
+                y2: 3,
+                lineWidth: 0.5,
+              },
+            ],
+            margin: lineMargin,
+          },
+          skillsList,
+          // Professional Experience
+          {
+            text: 'PROFESSIONAL EXPERIENCE',
+            fontSize: 16,
+            bold: true,
+            margin: headingMargin,
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 3,
+                x2: 540,
+                y2: 3,
+                lineWidth: 0.5,
+              },
+            ],
+            margin: lineMargin,
+          },
+          ...experienceContent,
+          // Education
+          {
+            text: 'EDUCATION',
+            fontSize: 16,
+            bold: true,
+            margin: headingMargin,
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 3,
+                x2: 540,
+                y2: 3,
+                lineWidth: 0.5,
+              },
+            ],
+            margin: lineMargin,
+          },
+          ...educationContent,
+        ].filter((item) => item !== null),
+      };
+
+      // Generate PDF and return as blob
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      pdfMake.createPdf(docDefinition as any).getBlob((blob: Blob) => {
+        console.log('✅ Resume PDF generated successfully');
+        resolve(blob);
       });
+    } catch (error) {
+      console.error('❌ Error generating PDF resume:', error);
+      reject(error);
     }
-
-    // Define document structure
-    const docDefinition: Record<string, unknown> = {
-      pageSize: 'LETTER',
-      pageMargins: [36, 36, 36, 36], // 0.5 inches = 36 points
-      defaultStyle: {
-        font: 'Roboto',
-      },
-      content: [
-        // Name
-        {
-          text: `${resumeData.firstName.toUpperCase()} ${resumeData.lastName.toUpperCase()}`,
-          fontSize: 20,
-          bold: true,
-          alignment: 'center',
-          margin: [0, 0, 0, 4],
-        },
-        // Contact
-        {
-          text: contactTextArray,
-          fontSize: 10,
-          alignment: 'center',
-          margin: textMargin,
-        },
-        // Professional Summary
-        {
-          text: 'PROFESSIONAL SUMMARY',
-          fontSize: 16,
-          bold: true,
-          margin: headingMargin,
-        },
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: 0,
-              y1: 3,
-              x2: 540,
-              y2: 3,
-              lineWidth: 0.5,
-            },
-          ],
-          margin: lineMargin,
-        },
-        {
-          text: resumeData.summary,
-          fontSize: 10,
-          alignment: 'justify',
-          margin: textMargin,
-        },
-        // Skills
-        {
-          text: 'SKILLS',
-          fontSize: 16,
-          bold: true,
-          margin: headingMargin,
-        },
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: 0,
-              y1: 3,
-              x2: 540,
-              y2: 3,
-              lineWidth: 0.5,
-            },
-          ],
-          margin: lineMargin,
-        },
-        skillsList,
-        // Professional Experience
-        {
-          text: 'PROFESSIONAL EXPERIENCE',
-          fontSize: 16,
-          bold: true,
-          margin: headingMargin,
-        },
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: 0,
-              y1: 3,
-              x2: 540,
-              y2: 3,
-              lineWidth: 0.5,
-            },
-          ],
-          margin: lineMargin,
-        },
-        ...experienceContent,
-        // Education
-        {
-          text: 'EDUCATION',
-          fontSize: 16,
-          bold: true,
-          margin: headingMargin,
-        },
-        {
-          canvas: [
-            {
-              type: 'line',
-              x1: 0,
-              y1: 3,
-              x2: 540,
-              y2: 3,
-              lineWidth: 0.5,
-            },
-          ],
-          margin: lineMargin,
-        },
-        ...educationContent,
-      ].filter((item) => item !== null),
-    };
-
-    // Generate and download PDF
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    pdfMake.createPdf(docDefinition as any).download('Subbiah_Chandramouli_Resume.pdf');
-    console.log('✅ Resume PDF generated successfully');
-  } catch (error) {
-    console.error('❌ Error generating PDF resume:', error);
-    throw error;
-  }
+  });
 }

@@ -60,47 +60,47 @@ import {
 
 ### DropdownMenu
 
-| Prop       | Type      | Default | Description                                         |
-| ---------- | --------- | ------- | --------------------------------------------------- |
-| `modal`    | `boolean` | `true`  | Whether to prevent background scroll when menu open |
-| `open`     | `boolean` | -       | Controlled open state                               |
-| `onOpenChange` | `(open: boolean) => void` | - | Callback when open state changes |
+| Prop           | Type                      | Default | Description                                         |
+| -------------- | ------------------------- | ------- | --------------------------------------------------- |
+| `modal`        | `boolean`                 | `true`  | Whether to prevent background scroll when menu open |
+| `open`         | `boolean`                 | -       | Controlled open state                               |
+| `onOpenChange` | `(open: boolean) => void` | -       | Callback when open state changes                    |
 
 ### DropdownMenuTrigger
 
-| Prop    | Type        | Default | Description                                 |
-| ------- | ----------- | ------- | ------------------------------------------- |
-| `asChild` | `boolean` | `false` | Merge props with child element              |
+| Prop      | Type      | Default | Description                    |
+| --------- | --------- | ------- | ------------------------------ |
+| `asChild` | `boolean` | `false` | Merge props with child element |
 
 ### DropdownMenuContent
 
-| Prop                | Type                                  | Default | Description                      |
-| ------------------- | ------------------------------------- | ------- | -------------------------------- |
-| `sideOffset`        | `number`                              | `4`     | Offset from trigger in pixels    |
-| `align`             | `"start" \| "center" \| "end"`        | -       | Horizontal alignment             |
-| `side`              | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Side to position menu |
-| `matchTriggerWidth` | `boolean`                             | `false` | Make dropdown same width as trigger button |
+| Prop                | Type                                     | Default    | Description                                |
+| ------------------- | ---------------------------------------- | ---------- | ------------------------------------------ |
+| `sideOffset`        | `number`                                 | `4`        | Offset from trigger in pixels              |
+| `align`             | `"start" \| "center" \| "end"`           | -          | Horizontal alignment                       |
+| `side`              | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Side to position menu                      |
+| `matchTriggerWidth` | `boolean`                                | `false`    | Make dropdown same width as trigger button |
 
 ### DropdownMenuItem
 
-| Prop       | Type      | Default | Description                          |
-| ---------- | --------- | ------- | ------------------------------------ |
-| `inset`    | `boolean` | `false` | Add left padding for alignment       |
-| `disabled` | `boolean` | `false` | Disable item interaction             |
-| `onSelect` | `(event: Event) => void` | - | Callback when item selected     |
+| Prop       | Type                     | Default | Description                    |
+| ---------- | ------------------------ | ------- | ------------------------------ |
+| `inset`    | `boolean`                | `false` | Add left padding for alignment |
+| `disabled` | `boolean`                | `false` | Disable item interaction       |
+| `onSelect` | `(event: Event) => void` | -       | Callback when item selected    |
 
 ### DropdownMenuCheckboxItem
 
-| Prop      | Type                              | Default | Description                         |
-| --------- | --------------------------------- | ------- | ----------------------------------- |
-| `checked` | `boolean \| "indeterminate"`      | -       | Checked state of checkbox           |
-| `onCheckedChange` | `(checked: boolean) => void` | - | Callback when checked state changes |
+| Prop              | Type                         | Default | Description                         |
+| ----------------- | ---------------------------- | ------- | ----------------------------------- |
+| `checked`         | `boolean \| "indeterminate"` | -       | Checked state of checkbox           |
+| `onCheckedChange` | `(checked: boolean) => void` | -       | Callback when checked state changes |
 
 ### DropdownMenuRadioItem
 
-| Prop    | Type     | Default | Description                  |
-| ------- | -------- | ------- | ---------------------------- |
-| `value` | `string` | -       | Value of radio item          |
+| Prop    | Type     | Default | Description         |
+| ------- | -------- | ------- | ------------------- |
+| `value` | `string` | -       | Value of radio item |
 
 ### DropdownMenuLabel
 
@@ -137,7 +137,7 @@ import { User, Settings, LogOut } from 'lucide-react';
       <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
     </DropdownMenuItem>
   </DropdownMenuContent>
-</DropdownMenu>
+</DropdownMenu>;
 ```
 
 **Visual:**
@@ -157,20 +157,14 @@ const [showSidebar, setShowSidebar] = useState(false);
   <DropdownMenuContent>
     <DropdownMenuLabel>Toggle Views</DropdownMenuLabel>
     <DropdownMenuSeparator />
-    <DropdownMenuCheckboxItem
-      checked={showPanel}
-      onCheckedChange={setShowPanel}
-    >
+    <DropdownMenuCheckboxItem checked={showPanel} onCheckedChange={setShowPanel}>
       Show Panel
     </DropdownMenuCheckboxItem>
-    <DropdownMenuCheckboxItem
-      checked={showSidebar}
-      onCheckedChange={setShowSidebar}
-    >
+    <DropdownMenuCheckboxItem checked={showSidebar} onCheckedChange={setShowSidebar}>
       Show Sidebar
     </DropdownMenuCheckboxItem>
   </DropdownMenuContent>
-</DropdownMenu>
+</DropdownMenu>;
 ```
 
 **Visual:**
@@ -195,7 +189,7 @@ const [theme, setTheme] = useState('light');
       <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
     </DropdownMenuRadioGroup>
   </DropdownMenuContent>
-</DropdownMenu>
+</DropdownMenu>;
 ```
 
 **Visual:**
@@ -333,7 +327,9 @@ type DropdownMenuItemProps = ComponentPropsWithoutRef<typeof DropdownMenuPrimiti
 };
 
 // Dropdown Menu Checkbox Item
-type DropdownMenuCheckboxItemProps = ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>;
+type DropdownMenuCheckboxItemProps = ComponentPropsWithoutRef<
+  typeof DropdownMenuPrimitive.CheckboxItem
+>;
 
 // Dropdown Menu Radio Item
 type DropdownMenuRadioItemProps = ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>;

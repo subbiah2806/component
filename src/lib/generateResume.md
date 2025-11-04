@@ -21,6 +21,7 @@ import {
 Loads resume data from `/resume.json` and generates a downloadable resume document.
 
 **Parameters:**
+
 - `format` - `'docx'` or `'pdf'` (default: `'docx'`)
 
 ```tsx
@@ -43,22 +44,26 @@ const resumeData: ResumeData = {
   phone: '555-0100',
   summary: 'Experienced software engineer...',
   skills: {
-    'Frontend': ['React', 'TypeScript'],
-    'Backend': ['Node.js', 'Python']
+    Frontend: ['React', 'TypeScript'],
+    Backend: ['Node.js', 'Python'],
   },
-  experience: [{
-    company: 'Tech Corp',
-    location: 'San Francisco, CA',
-    position: 'Senior Engineer',
-    startDate: '2020-01',
-    endDate: 'Present',
-    achievements: ['Built scalable systems', 'Led team of 5']
-  }],
-  education: [{
-    institution: 'University',
-    degree: 'BS Computer Science',
-    dates: '2016-2020'
-  }]
+  experience: [
+    {
+      company: 'Tech Corp',
+      location: 'San Francisco, CA',
+      position: 'Senior Engineer',
+      startDate: '2020-01',
+      endDate: 'Present',
+      achievements: ['Built scalable systems', 'Led team of 5'],
+    },
+  ],
+  education: [
+    {
+      institution: 'University',
+      degree: 'BS Computer Science',
+      dates: '2016-2020',
+    },
+  ],
 };
 
 await generateResumeDocx(resumeData);
