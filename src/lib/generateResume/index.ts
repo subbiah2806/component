@@ -9,7 +9,6 @@ import {
   Paragraph,
   TextRun,
   AlignmentType,
-  TabStopPosition,
   TabStopType,
   BorderStyle,
   Packer,
@@ -17,6 +16,14 @@ import {
 } from 'docx';
 import pdfMake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import {
+  getFontSizeHalfPoints,
+  getMarginTwips,
+  PageLayout,
+  pointsToTwips,
+  ResumeTypography,
+  getMarginArray,
+} from './resumeTypography';
 
 // Set up fonts for pdfMake
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,13 +90,13 @@ function createHeader(data: ResumeData): Paragraph[] {
   paragraphs.push(
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 80 },
+      spacing: { after: getMarginTwips('h1').bottom },
       children: [
         new TextRun({
           text: `${data.firstName.toUpperCase()} ${data.lastName.toUpperCase()}`,
-          font: 'Arial',
-          size: 40, // 20pt = 40 half-points
-          bold: true,
+          font: ResumeTypography.h1.font,
+          size: getFontSizeHalfPoints('h1'),
+          bold: ResumeTypography.h1.bold,
         }),
       ],
     })
@@ -104,8 +111,8 @@ function createHeader(data: ResumeData): Paragraph[] {
       contactChildren.push(
         new TextRun({
           text: ' | ',
-          font: 'Arial',
-          size: 20, // 10pt = 20 half-points
+          font: ResumeTypography.contact.font,
+          size: getFontSizeHalfPoints('contact'),
         })
       );
     }
@@ -118,8 +125,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: data.preferredLocations[0],
-        font: 'Arial',
-        size: 20,
+        font: ResumeTypography.contact.font,
+        size: getFontSizeHalfPoints('contact'),
       })
     );
   }
@@ -130,8 +137,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: data.phone,
-        font: 'Arial',
-        size: 20,
+        font: ResumeTypography.contact.font,
+        size: getFontSizeHalfPoints('contact'),
       })
     );
   }
@@ -142,8 +149,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: data.email,
-        font: 'Arial',
-        size: 20,
+        font: ResumeTypography.contact.font,
+        size: getFontSizeHalfPoints('contact'),
       })
     );
   }
@@ -154,8 +161,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: '🔗 ',
-        font: 'Arial',
-        size: 14, // 7pt = 14 half-points
+        font: ResumeTypography.icon.font,
+        size: getFontSizeHalfPoints('icon'),
       })
     );
     contactChildren.push(
@@ -163,8 +170,8 @@ function createHeader(data: ResumeData): Paragraph[] {
         children: [
           new TextRun({
             text: 'GitHub',
-            font: 'Arial',
-            size: 20,
+            font: ResumeTypography.contact.font,
+            size: getFontSizeHalfPoints('contact'),
             style: 'Hyperlink',
           }),
         ],
@@ -179,8 +186,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: '🔗 ',
-        font: 'Arial',
-        size: 14,
+        font: ResumeTypography.icon.font,
+        size: getFontSizeHalfPoints('icon'),
       })
     );
     contactChildren.push(
@@ -188,8 +195,8 @@ function createHeader(data: ResumeData): Paragraph[] {
         children: [
           new TextRun({
             text: 'LinkedIn',
-            font: 'Arial',
-            size: 20,
+            font: ResumeTypography.contact.font,
+            size: getFontSizeHalfPoints('contact'),
             style: 'Hyperlink',
           }),
         ],
@@ -204,8 +211,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: '🔗 ',
-        font: 'Arial',
-        size: 14,
+        font: ResumeTypography.icon.font,
+        size: getFontSizeHalfPoints('icon'),
       })
     );
     contactChildren.push(
@@ -213,8 +220,8 @@ function createHeader(data: ResumeData): Paragraph[] {
         children: [
           new TextRun({
             text: 'Portfolio',
-            font: 'Arial',
-            size: 20,
+            font: ResumeTypography.contact.font,
+            size: getFontSizeHalfPoints('contact'),
             style: 'Hyperlink',
           }),
         ],
@@ -229,8 +236,8 @@ function createHeader(data: ResumeData): Paragraph[] {
     contactChildren.push(
       new TextRun({
         text: data.visaStatus,
-        font: 'Arial',
-        size: 20,
+        font: ResumeTypography.contact.font,
+        size: getFontSizeHalfPoints('contact'),
       })
     );
   }
@@ -238,7 +245,7 @@ function createHeader(data: ResumeData): Paragraph[] {
   paragraphs.push(
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 200 },
+      spacing: { after: getMarginTwips('contact').bottom },
       children: contactChildren,
     })
   );
@@ -251,7 +258,7 @@ function createHeader(data: ResumeData): Paragraph[] {
  */
 function createSectionHeader(title: string): Paragraph {
   return new Paragraph({
-    spacing: { before: 200, after: 120 },
+    spacing: { before: getMarginTwips('h2').top, after: getMarginTwips('line').bottom },
     border: {
       bottom: {
         color: '000000',
@@ -263,9 +270,9 @@ function createSectionHeader(title: string): Paragraph {
     children: [
       new TextRun({
         text: title,
-        font: 'Arial',
-        size: 32, // 16pt = 32 half-points
-        bold: true,
+        font: ResumeTypography.h2.font,
+        size: getFontSizeHalfPoints('h2'),
+        bold: ResumeTypography.h2.bold,
       }),
     ],
   });
@@ -279,12 +286,12 @@ function createSummary(summary: string): Paragraph[] {
     createSectionHeader('PROFESSIONAL SUMMARY'),
     new Paragraph({
       alignment: AlignmentType.JUSTIFIED,
-      spacing: { after: 160 },
+      spacing: { after: getMarginTwips('normal').bottom, before: getMarginTwips('normal').top },
       children: [
         new TextRun({
           text: summary,
-          font: 'Arial',
-          size: 20,
+          font: ResumeTypography.normal.font,
+          size: getFontSizeHalfPoints('normal'),
         }),
       ],
     }),
@@ -301,19 +308,19 @@ function createSkills(skills: Record<string, string[]>): Paragraph[] {
     if (skillsList && skillsList.length > 0) {
       paragraphs.push(
         new Paragraph({
-          indent: { left: 144 }, // 0.1 inches = 144 twips
-          spacing: { after: 40 },
+          indent: { left: getMarginTwips('ul').left },
+          spacing: { after: getMarginTwips('h3').bottom },
           children: [
             new TextRun({
               text: `● ${category}: `,
-              font: 'Arial',
-              size: 20,
-              bold: true,
+              font: ResumeTypography.h3.font,
+              size: getFontSizeHalfPoints('normal'),
+              bold: ResumeTypography.h3.bold,
             }),
             new TextRun({
               text: skillsList.join(', '),
-              font: 'Arial',
-              size: 20,
+              font: ResumeTypography.normal.font,
+              size: getFontSizeHalfPoints('normal'),
             }),
           ],
         })
@@ -330,6 +337,10 @@ function createSkills(skills: Record<string, string[]>): Paragraph[] {
 function createExperience(experience: Experience[]): Paragraph[] {
   const paragraphs: Paragraph[] = [createSectionHeader('PROFESSIONAL EXPERIENCE')];
 
+  // Calculate right tab stop position in twips
+  // Page width (8.5") - left margin (0.5") - right margin (0.5") = 7.5" = 540 points = 10800 twips
+  const rightTabPosition = pointsToTwips(540);
+
   experience.forEach((exp, idx) => {
     const location = exp.location || 'Remote';
     const dateRange = formatDateRange(exp.startDate, exp.endDate);
@@ -338,30 +349,29 @@ function createExperience(experience: Experience[]): Paragraph[] {
     paragraphs.push(
       new Paragraph({
         spacing: {
-          before: idx > 0 ? 240 : 0,
-          after: 20,
+          before: idx > 0 ? getMarginTwips('ul').bottom : 0,
         },
         tabStops: [
           {
             type: TabStopType.RIGHT,
-            position: TabStopPosition.MAX,
+            position: rightTabPosition,
           },
         ],
         children: [
           new TextRun({
             text: exp.company,
-            font: 'Arial',
-            size: 20,
-            bold: true,
+            font: ResumeTypography.h3.font,
+            size: getFontSizeHalfPoints('normal'),
+            bold: ResumeTypography.h3.bold,
           }),
           new TextRun({
             text: '\t',
           }),
           new TextRun({
             text: location,
-            font: 'Arial',
-            size: 20,
-            bold: true,
+            font: ResumeTypography.h3.font,
+            size: getFontSizeHalfPoints('h3'),
+            bold: ResumeTypography.h3.bold,
           }),
         ],
       })
@@ -370,18 +380,18 @@ function createExperience(experience: Experience[]): Paragraph[] {
     // Line 2: Position (left, italic) | Date range (right, italic)
     paragraphs.push(
       new Paragraph({
-        spacing: { after: 80 },
+        spacing: { after: getMarginTwips('position').bottom },
         tabStops: [
           {
             type: TabStopType.RIGHT,
-            position: TabStopPosition.MAX,
+            position: rightTabPosition,
           },
         ],
         children: [
           new TextRun({
             text: exp.position,
-            font: 'Arial',
-            size: 20,
+            font: ResumeTypography.position.font,
+            size: getFontSizeHalfPoints('position'),
             italics: true,
           }),
           new TextRun({
@@ -389,8 +399,8 @@ function createExperience(experience: Experience[]): Paragraph[] {
           }),
           new TextRun({
             text: dateRange,
-            font: 'Arial',
-            size: 20,
+            font: ResumeTypography.position.font,
+            size: getFontSizeHalfPoints('position'),
             italics: true,
           }),
         ],
@@ -402,13 +412,13 @@ function createExperience(experience: Experience[]): Paragraph[] {
       paragraphs.push(
         new Paragraph({
           alignment: AlignmentType.JUSTIFIED,
-          indent: { left: 144 },
-          spacing: { after: 60 },
+          indent: { left: getMarginTwips('ul').left },
+          spacing: { before: getMarginTwips('li').top, after: getMarginTwips('li').bottom },
           children: [
             new TextRun({
               text: `● ${exp.companyDescription}`,
-              font: 'Arial',
-              size: 20,
+              font: ResumeTypography.normal.font,
+              size: getFontSizeHalfPoints('normal'),
             }),
           ],
         })
@@ -420,13 +430,13 @@ function createExperience(experience: Experience[]): Paragraph[] {
       paragraphs.push(
         new Paragraph({
           alignment: AlignmentType.JUSTIFIED,
-          indent: { left: 144 },
-          spacing: { after: 60 },
+          indent: { left: getMarginTwips('ul').left },
+          spacing: { before: getMarginTwips('li').top, after: getMarginTwips('li').bottom },
           children: [
             new TextRun({
               text: `● ${achievement}`,
-              font: 'Arial',
-              size: 20,
+              font: ResumeTypography.normal.font,
+              size: getFontSizeHalfPoints('normal'),
             }),
           ],
         })
@@ -443,36 +453,40 @@ function createExperience(experience: Experience[]): Paragraph[] {
 function createEducation(education: Education[]): Paragraph[] {
   const paragraphs: Paragraph[] = [createSectionHeader('EDUCATION')];
 
+  // Calculate right tab stop position in twips
+  // Page width (8.5") - left margin (0.5") - right margin (0.5") = 7.5" = 540 points = 10800 twips
+  const rightTabPosition = pointsToTwips(540);
+
   education.forEach((edu) => {
     paragraphs.push(
       new Paragraph({
-        spacing: { after: 40 },
+        spacing: { after: getMarginTwips('h3').bottom },
         tabStops: [
           {
             type: TabStopType.RIGHT,
-            position: TabStopPosition.MAX,
+            position: rightTabPosition,
           },
         ],
         children: [
           new TextRun({
             text: `${edu.degree}, `,
-            font: 'Arial',
-            size: 20,
-            bold: true,
+            font: ResumeTypography.h3.font,
+            size: getFontSizeHalfPoints('normal'),
+            bold: ResumeTypography.h3.bold,
           }),
           new TextRun({
             text: edu.institution,
-            font: 'Arial',
-            size: 20,
+            font: ResumeTypography.normal.font,
+            size: getFontSizeHalfPoints('normal'),
           }),
           new TextRun({
             text: '\t',
           }),
           new TextRun({
             text: edu.dates,
-            font: 'Arial',
-            size: 20,
-            bold: true,
+            font: ResumeTypography.h3.font,
+            size: getFontSizeHalfPoints('normal'),
+            bold: ResumeTypography.h3.bold,
           }),
         ],
       })
@@ -503,10 +517,10 @@ export async function generateResumeDocx(resumeData: ResumeData): Promise<Blob> 
           properties: {
             page: {
               margin: {
-                top: 720, // 0.5 inches = 720 twips
-                bottom: 720,
-                left: 720,
-                right: 720,
+                top: pointsToTwips(PageLayout.margins.top),
+                bottom: pointsToTwips(PageLayout.margins.bottom),
+                left: pointsToTwips(PageLayout.margins.left),
+                right: pointsToTwips(PageLayout.margins.right),
               },
             },
           },
@@ -543,10 +557,14 @@ export async function downloadResume(
   saveAs(blob, `Subbiah_Chandramouli_Resume.${format}`);
 }
 
-const headingMargin = [0, 10, 0, 0];
-const lineMargin = [0, 0, 0, 6];
-const textMargin = [0, 0, 0, 0];
-const listMargin = [10, 0, 0, 0];
+const headingMargin = getMarginArray('h2');
+const lineMargin = getMarginArray('line');
+const textMargin = getMarginArray('normal');
+const listMargin = getMarginArray('ul');
+const h1Margin = getMarginArray('h1');
+const h3Margin = getMarginArray('h3');
+const liMargin = getMarginArray('li');
+const positionMargin = getMarginArray('position');
 
 /**
  * Generate resume PDF from JSON data and return blob
@@ -589,8 +607,8 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         if (skillsList && skillsList.length > 0) {
           skillsContent.push({
             text: [{ text: `${category}: `, bold: true }, { text: skillsList.join(', ') }],
-            fontSize: 10,
-            margin: [0, 0, 0, 2],
+            fontSize: ResumeTypography.normal.fontSize,
+            margin: liMargin,
           });
         }
       }
@@ -600,7 +618,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         skillsContent.length > 0
           ? {
               ul: skillsContent,
-              margin: listMargin, // 10pt left indent for bullet list
+              margin: [...listMargin.slice(0, -1), 0],
             }
           : null;
 
@@ -614,19 +632,29 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         // Company and location
         experienceContent.push({
           columns: [
-            { text: exp.company, bold: true, fontSize: 10 },
-            { text: location, bold: true, fontSize: 10, alignment: 'right' },
+            { text: exp.company, bold: true, fontSize: ResumeTypography.normal.fontSize },
+            {
+              text: location,
+              bold: true,
+              fontSize: ResumeTypography.normal.fontSize,
+              alignment: 'right',
+            },
           ],
-          margin: [0, 0, 0, 1],
+          margin: h3Margin,
         });
 
         // Position and dates
         experienceContent.push({
           columns: [
-            { text: exp.position, italics: true, fontSize: 10 },
-            { text: dateRange, italics: true, fontSize: 10, alignment: 'right' },
+            { text: exp.position, italics: true, fontSize: ResumeTypography.position.fontSize },
+            {
+              text: dateRange,
+              italics: true,
+              fontSize: ResumeTypography.position.fontSize,
+              alignment: 'right',
+            },
           ],
-          margin: [0, 0, 0, 4],
+          margin: positionMargin,
         });
 
         // Build list items for this experience
@@ -636,7 +664,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         if (exp.companyDescription) {
           expItems.push({
             text: exp.companyDescription,
-            fontSize: 10,
+            fontSize: ResumeTypography.normal.fontSize,
             alignment: 'justify',
           });
         }
@@ -645,7 +673,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         for (const achievement of exp.achievements) {
           expItems.push({
             text: achievement,
-            fontSize: 10,
+            fontSize: ResumeTypography.normal.fontSize,
             alignment: 'justify',
           });
         }
@@ -654,7 +682,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         if (expItems.length > 0) {
           experienceContent.push({
             ul: expItems,
-            margin: isLastExperience ? listMargin : [...listMargin.slice(0, -1), 8],
+            margin: isLastExperience ? [...listMargin.slice(0, -1), 0] : listMargin,
           });
         }
       });
@@ -666,41 +694,51 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
           columns: [
             {
               text: [{ text: `${edu.degree}, `, bold: true }, { text: edu.institution }],
-              fontSize: 10,
+              fontSize: ResumeTypography.normal.fontSize,
             },
-            { text: edu.dates, bold: true, fontSize: 10, alignment: 'right' },
+            {
+              text: edu.dates,
+              bold: true,
+              fontSize: ResumeTypography.normal.fontSize,
+              alignment: 'right',
+            },
           ],
-          margin: [0, 0, 0, 2],
+          margin: h3Margin,
         });
       }
 
       // Define document structure
       const docDefinition: Record<string, unknown> = {
         pageSize: 'LETTER',
-        pageMargins: [36, 36, 36, 36], // 0.5 inches = 36 points
+        pageMargins: [
+          PageLayout.margins.top,
+          PageLayout.margins.right,
+          PageLayout.margins.bottom,
+          PageLayout.margins.left,
+        ],
         defaultStyle: {
-          font: 'Roboto',
+          font: PageLayout.fonts.pdf,
         },
         content: [
           // Name
           {
             text: `${resumeData.firstName.toUpperCase()} ${resumeData.lastName.toUpperCase()}`,
-            fontSize: 20,
+            fontSize: ResumeTypography.h1.fontSize,
             bold: true,
             alignment: 'center',
-            margin: [0, 0, 0, 4],
+            margin: h1Margin,
           },
           // Contact
           {
             text: contactTextArray,
-            fontSize: 10,
+            fontSize: ResumeTypography.contact.fontSize,
             alignment: 'center',
             margin: textMargin,
           },
           // Professional Summary
           {
             text: 'PROFESSIONAL SUMMARY',
-            fontSize: 16,
+            fontSize: ResumeTypography.h2.fontSize,
             bold: true,
             margin: headingMargin,
           },
@@ -719,14 +757,14 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
           },
           {
             text: resumeData.summary,
-            fontSize: 10,
+            fontSize: ResumeTypography.normal.fontSize,
             alignment: 'justify',
             margin: textMargin,
           },
           // Skills
           {
             text: 'SKILLS',
-            fontSize: 16,
+            fontSize: ResumeTypography.h2.fontSize,
             bold: true,
             margin: headingMargin,
           },
@@ -747,7 +785,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
           // Professional Experience
           {
             text: 'PROFESSIONAL EXPERIENCE',
-            fontSize: 16,
+            fontSize: ResumeTypography.h2.fontSize,
             bold: true,
             margin: headingMargin,
           },
@@ -768,7 +806,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
           // Education
           {
             text: 'EDUCATION',
-            fontSize: 16,
+            fontSize: ResumeTypography.h2.fontSize,
             bold: true,
             margin: headingMargin,
           },
