@@ -13,7 +13,17 @@
 /**
  * Text type identifiers used throughout resume generation
  */
-export type TextType = 'h1' | 'h2' | 'h3' | 'normal' | 'line' | 'ul' | 'li' | 'icon' | 'contact' | 'position';
+export type TextType =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'normal'
+  | 'line'
+  | 'ul'
+  | 'li'
+  | 'icon'
+  | 'contact'
+  | 'position';
 
 /**
  * Typography configuration for a specific text type
