@@ -140,15 +140,15 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
       setIsHovering(false);
     };
 
-    window.addEventListener('mousemove', updatePosition, { passive: true });
-    document.addEventListener('mouseover', handleMouseOver, { passive: true });
+    targetElement.addEventListener('mousemove', updatePosition, { passive: true });
+    targetElement.addEventListener('mouseover', handleMouseOver, { passive: true });
     targetElement.addEventListener('mouseleave', handleMouseLeave, {
       passive: true,
     } as AddEventListenerOptions);
 
     return () => {
-      window.removeEventListener('mousemove', updatePosition);
-      document.removeEventListener('mouseover', handleMouseOver);
+      targetElement.removeEventListener('mousemove', updatePosition);
+      targetElement.removeEventListener('mouseover', handleMouseOver);
       targetElement.removeEventListener('mouseleave', handleMouseLeave, {
         passive: true,
       } as AddEventListenerOptions);

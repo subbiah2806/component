@@ -83,7 +83,11 @@ export function InitializeReusableChunks({
   }, [applyToBody]);
 
   return (
-    <div ref={containerRef} {...(applyToBody ? {} : { id: 'reusables-app-root' })}>
+    <div
+      style={{ height: '100%', width: '100%' }}
+      ref={containerRef}
+      {...(applyToBody ? {} : { id: 'reusables-app-root' })}
+    >
       <ThemeProvider targetElement={targetElement}>
         <AudioProvider>
           <CursorProvider targetElement={targetElement}>{children}</CursorProvider>
