@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  important: '#reusables-app-root',
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
     './index.html',
