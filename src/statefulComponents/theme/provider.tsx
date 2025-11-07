@@ -1,11 +1,12 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode, RefObject } from 'react';
 import { ThemeContext, Theme, ThemeContextType } from './context';
 
 interface ThemeProviderProps {
   children: ReactNode;
+  containerRef: RefObject<HTMLDivElement | null>;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
+export function ThemeProvider({ children, containerRef }: ThemeProviderProps) {
   // Initialize theme state from localStorage or system preference
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
@@ -16,24 +17,30 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   });
 
   useEffect(() => {
-    // Apply theme class on mount and when theme changes
+    // Apply theme class to the container element instead of document.documentElement
+    const container = containerRef.current;
+    if (!container) return;
+
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      container.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      container.classList.remove('dark');
     }
-  }, [isDark]);
+  }, [isDark, containerRef]);
 
   const toggleTheme = (): void => {
     const newTheme = !isDark;
     setIsDark(newTheme);
 
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    const container = containerRef.current;
+    if (container) {
+      if (newTheme) {
+        container.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        container.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
     }
   };
 

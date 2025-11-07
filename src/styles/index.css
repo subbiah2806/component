@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  * {
+  /* Scope all base styles to #reusables-app-root */
+  /* Use :where() on entire selector to have zero specificity - allows utilities to override */
+  :where(#reusables-app-root *) {
     @apply border-border;
   }
 
-  body {
+  #reusables-app-root {
     @apply bg-background text-foreground;
     font-family:
       'Inter',
@@ -16,7 +18,7 @@
       sans-serif;
   }
 
-  :root {
+  #reusables-app-root {
     /* shadcn/ui Dark Matter Theme - Light Mode */
     /* OKLCH values without oklch() wrapper for opacity support */
     --background: 1 0 0;
@@ -47,7 +49,7 @@
     --radius: 0.75rem;
   }
 
-  .dark {
+  #reusables-app-root.dark {
     /* shadcn/ui Dark Matter Theme - Dark Mode */
     /* OKLCH values without oklch() wrapper for opacity support */
     --background: 0.1689 0.0226 264.2966;
@@ -132,41 +134,41 @@
 
 @layer components {
   /* Remove focus outline on mouse click, keep for keyboard navigation (accessibility) */
-  *:focus:not(:focus-visible) {
+  #reusables-app-root *:focus:not(:focus-visible) {
     outline: none !important;
     box-shadow: none !important;
   }
 
   /* Preserve focus ring for keyboard navigation only */
-  *:focus-visible {
+  #reusables-app-root *:focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
-  /* Scrollbar for professional look */
-  ::-webkit-scrollbar {
+  /* Scrollbar for professional look - scoped to seekr-app-root */
+  #reusables-app-root ::-webkit-scrollbar {
     width: 8px;
   }
 
-  ::-webkit-scrollbar-track {
+  #reusables-app-root ::-webkit-scrollbar-track {
     @apply bg-muted;
   }
 
-  ::-webkit-scrollbar-thumb {
+  #reusables-app-root ::-webkit-scrollbar-thumb {
     @apply rounded-full bg-muted-foreground;
   }
 }
 
-/* Professional Typography */
-.prose {
+/* Professional Typography - scoped */
+#reusables-app-root .prose {
   @apply text-foreground;
 }
 
-/* Prose headings color */
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
+/* Prose headings color - scoped */
+#reusables-app-root .prose h1,
+#reusables-app-root .prose h2,
+#reusables-app-root .prose h3,
+#reusables-app-root .prose h4,
+#reusables-app-root .prose h5,
+#reusables-app-root .prose h6 {
   @apply text-foreground;
 }

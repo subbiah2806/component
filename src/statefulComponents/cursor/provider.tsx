@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef, ReactNode } from 'react';
+import { useState, useEffect, useRef, ReactNode, RefObject } from 'react';
 import { CursorContext, CursorContextType } from './context';
 
 interface CursorProviderProps {
   children: ReactNode;
+  containerRef: RefObject<HTMLDivElement | null>;
 }
 
 interface Position {
@@ -10,7 +11,7 @@ interface Position {
   y: number;
 }
 
-export function CursorProvider({ children }: CursorProviderProps) {
+export function CursorProvider({ children, containerRef }: CursorProviderProps) {
   // Check device capabilities
   const canUseCursor =
     typeof window !== 'undefined' &&
@@ -38,40 +39,66 @@ export function CursorProvider({ children }: CursorProviderProps) {
     localStorage.setItem('customCursorEnabled', String(newValue));
   };
 
-  // Inject CSS rule once on mount
+  // Inject CSS rule scoped to #reusables-app-root
   useEffect(() => {
     const style = document.createElement('style');
     style.id = 'custom-cursor-style';
-    style.textContent = 'body.custom-cursor-enabled * { cursor: none !important; }';
-    document.head.appendChild(style);
+    style.textContent = '#reusables-app-root.custom-cursor-enabled * { cursor: none !important; }';
+
+    // Find the style parent (could be in Shadow DOM or document head)
+    const container = containerRef?.current;
+    const styleParent =
+      container?.getRootNode() instanceof ShadowRoot
+        ? (container.getRootNode() as ShadowRoot)
+        : document.head;
+
+    styleParent.appendChild(style);
 
     return () => {
-      const styleElement = document.getElementById('custom-cursor-style');
+      const styleElement = styleParent.querySelector('#custom-cursor-style');
       if (styleElement) {
         styleElement.remove();
       }
     };
-  }, []);
+  }, [containerRef]);
 
-  // Toggle class based on cursor state
+  // Toggle class based on cursor state - scoped to #reusables-app-root
   useEffect(() => {
+    const container = containerRef?.current;
+    if (!container) return;
+
     if (isEnabled && canUseCursor) {
-      document.body.classList.add('custom-cursor-enabled');
+      container.classList.add('custom-cursor-enabled');
     } else {
-      document.body.classList.remove('custom-cursor-enabled');
+      container.classList.remove('custom-cursor-enabled');
     }
 
     return () => {
-      document.body.classList.remove('custom-cursor-enabled');
+      container.classList.remove('custom-cursor-enabled');
     };
-  }, [isEnabled, canUseCursor]);
+  }, [isEnabled, canUseCursor, containerRef]);
 
-  // Custom cursor tracking logic
+  // Custom cursor tracking logic - scoped to #reusables-app-root
   useEffect(() => {
     if (!isEnabled || !canUseCursor) return;
 
+    const container = containerRef?.current;
+    if (!container) return;
+
     // Performance optimized mouse move with RAF throttling
     const updatePosition = (e: MouseEvent): void => {
+      // Check if mouse is within the scoped container
+      const target = e.target as HTMLElement;
+      const isInsideContainer = container.contains(target);
+
+      if (!isInsideContainer) {
+        // Hide cursor when outside container
+        setPosition({ x: -9999, y: -9999 });
+        setIsHovering(false);
+        return;
+      }
+
+      // Calculate position relative to viewport (works in Shadow DOM)
       currentPosition.current = { x: e.clientX, y: e.clientY };
 
       // Cancel previous RAF if it exists
@@ -87,6 +114,14 @@ export function CursorProvider({ children }: CursorProviderProps) {
 
     const handleMouseOver = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
+      const container = containerRef.current;
+
+      // Only handle hover if inside the scoped container
+      if (!container || !container.contains(target)) {
+        setIsHovering(false);
+        return;
+      }
+
       if (
         target.tagName === 'BUTTON' ||
         target.tagName === 'A' ||
@@ -100,12 +135,24 @@ export function CursorProvider({ children }: CursorProviderProps) {
       }
     };
 
+    const handleMouseLeave = (): void => {
+      // Hide cursor when leaving the container
+      setPosition({ x: -9999, y: -9999 });
+      setIsHovering(false);
+    };
+
     window.addEventListener('mousemove', updatePosition, { passive: true });
     document.addEventListener('mouseover', handleMouseOver, { passive: true });
+    container.addEventListener('mouseleave', handleMouseLeave, {
+      passive: true,
+    } as AddEventListenerOptions);
 
     return () => {
       window.removeEventListener('mousemove', updatePosition);
       document.removeEventListener('mouseover', handleMouseOver);
+      container.removeEventListener('mouseleave', handleMouseLeave, {
+        passive: true,
+      } as AddEventListenerOptions);
       if (rafId.current) {
         cancelAnimationFrame(rafId.current);
       }
@@ -127,10 +174,8 @@ export function CursorProvider({ children }: CursorProviderProps) {
         <>
           {/* Main cursor ring */}
           <div
-            className={`pointer-events-none fixed left-0 top-0 z-[9999] h-6 w-6 rounded-full border-2 transition-[border-color,background-color,transform,box-shadow] duration-100 ${
-              isHovering
-                ? 'scale-150 border-primary bg-accent/30 shadow-lg shadow-accent/50'
-                : 'border-primary bg-primary/20'
+            className={`pointer-events-none fixed left-0 top-0 z-[9999] h-6 w-6 rounded-full border-2 border-primary transition-[border-color,background-color,transform,box-shadow] duration-100 ${
+              isHovering ? 'scale-150 bg-accent/30 shadow-lg shadow-accent/50' : 'bg-primary/20'
             }`}
             style={{
               left: `${position.x}px`,
@@ -141,9 +186,7 @@ export function CursorProvider({ children }: CursorProviderProps) {
           />
           {/* Inner dot */}
           <div
-            className={`pointer-events-none fixed left-0 top-0 z-[9999] h-2 w-2 rounded-full transition-colors duration-100 ${
-              isHovering ? 'bg-primary' : 'bg-primary'
-            }`}
+            className="pointer-events-none fixed left-0 top-0 z-[9999] h-2 w-2 rounded-full bg-primary transition-colors duration-100"
             style={{
               left: `${position.x}px`,
               top: `${position.y}px`,
