@@ -1,9 +1,13 @@
-import { useState, useEffect, useRef, ReactNode, RefObject } from 'react';
+import { useState, useEffect, useRef, ReactNode } from 'react';
 import { CursorContext, CursorContextType } from './context';
 
 interface CursorProviderProps {
   children: ReactNode;
-  containerRef: RefObject<HTMLDivElement | null>;
+  /**
+   * The target element where cursor styles should be applied.
+   * Can be either the container div or body element.
+   */
+  targetElement: HTMLElement | null;
 }
 
 interface Position {
@@ -11,7 +15,7 @@ interface Position {
   y: number;
 }
 
-export function CursorProvider({ children, containerRef }: CursorProviderProps) {
+export function CursorProvider({ children, targetElement }: CursorProviderProps) {
   // Check device capabilities
   const canUseCursor =
     typeof window !== 'undefined' &&
@@ -46,10 +50,9 @@ export function CursorProvider({ children, containerRef }: CursorProviderProps) 
     style.textContent = '#reusables-app-root.custom-cursor-enabled * { cursor: none !important; }';
 
     // Find the style parent (could be in Shadow DOM or document head)
-    const container = containerRef?.current;
     const styleParent =
-      container?.getRootNode() instanceof ShadowRoot
-        ? (container.getRootNode() as ShadowRoot)
+      targetElement?.getRootNode() instanceof ShadowRoot
+        ? (targetElement.getRootNode() as ShadowRoot)
         : document.head;
 
     styleParent.appendChild(style);
@@ -60,39 +63,36 @@ export function CursorProvider({ children, containerRef }: CursorProviderProps) 
         styleElement.remove();
       }
     };
-  }, [containerRef]);
+  }, [targetElement]);
 
   // Toggle class based on cursor state - scoped to #reusables-app-root
   useEffect(() => {
-    const container = containerRef?.current;
-    if (!container) return;
+    if (!targetElement) return;
 
     if (isEnabled && canUseCursor) {
-      container.classList.add('custom-cursor-enabled');
+      targetElement.classList.add('custom-cursor-enabled');
     } else {
-      container.classList.remove('custom-cursor-enabled');
+      targetElement.classList.remove('custom-cursor-enabled');
     }
 
     return () => {
-      container.classList.remove('custom-cursor-enabled');
+      targetElement.classList.remove('custom-cursor-enabled');
     };
-  }, [isEnabled, canUseCursor, containerRef]);
+  }, [isEnabled, canUseCursor, targetElement]);
 
   // Custom cursor tracking logic - scoped to #reusables-app-root
   useEffect(() => {
     if (!isEnabled || !canUseCursor) return;
-
-    const container = containerRef?.current;
-    if (!container) return;
+    if (!targetElement) return;
 
     // Performance optimized mouse move with RAF throttling
     const updatePosition = (e: MouseEvent): void => {
-      // Check if mouse is within the scoped container
-      const target = e.target as HTMLElement;
-      const isInsideContainer = container.contains(target);
+      // Check if mouse is within the scoped target element
+      const eventTarget = e.target as HTMLElement;
+      const isInsideTarget = targetElement.contains(eventTarget);
 
-      if (!isInsideContainer) {
-        // Hide cursor when outside container
+      if (!isInsideTarget) {
+        // Hide cursor when outside target
         setPosition({ x: -9999, y: -9999 });
         setIsHovering(false);
         return;
@@ -113,21 +113,20 @@ export function CursorProvider({ children, containerRef }: CursorProviderProps) 
     };
 
     const handleMouseOver = (e: MouseEvent): void => {
-      const target = e.target as HTMLElement;
-      const container = containerRef.current;
+      const eventTarget = e.target as HTMLElement;
 
-      // Only handle hover if inside the scoped container
-      if (!container || !container.contains(target)) {
+      // Only handle hover if inside the scoped target element
+      if (!targetElement.contains(eventTarget)) {
         setIsHovering(false);
         return;
       }
 
       if (
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'A' ||
-        target.closest('button') ||
-        target.closest('a') ||
-        target.classList.contains('clickable')
+        eventTarget.tagName === 'BUTTON' ||
+        eventTarget.tagName === 'A' ||
+        eventTarget.closest('button') ||
+        eventTarget.closest('a') ||
+        eventTarget.classList.contains('clickable')
       ) {
         setIsHovering(true);
       } else {
@@ -136,28 +135,28 @@ export function CursorProvider({ children, containerRef }: CursorProviderProps) 
     };
 
     const handleMouseLeave = (): void => {
-      // Hide cursor when leaving the container
+      // Hide cursor when leaving the target
       setPosition({ x: -9999, y: -9999 });
       setIsHovering(false);
     };
 
     window.addEventListener('mousemove', updatePosition, { passive: true });
     document.addEventListener('mouseover', handleMouseOver, { passive: true });
-    container.addEventListener('mouseleave', handleMouseLeave, {
+    targetElement.addEventListener('mouseleave', handleMouseLeave, {
       passive: true,
     } as AddEventListenerOptions);
 
     return () => {
       window.removeEventListener('mousemove', updatePosition);
       document.removeEventListener('mouseover', handleMouseOver);
-      container.removeEventListener('mouseleave', handleMouseLeave, {
+      targetElement.removeEventListener('mouseleave', handleMouseLeave, {
         passive: true,
       } as AddEventListenerOptions);
       if (rafId.current) {
         cancelAnimationFrame(rafId.current);
       }
     };
-  }, [isEnabled, canUseCursor]);
+  }, [isEnabled, canUseCursor, targetElement]);
 
   const value: CursorContextType = {
     isEnabled: isEnabled && canUseCursor,
