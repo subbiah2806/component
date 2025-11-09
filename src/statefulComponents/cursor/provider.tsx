@@ -33,6 +33,7 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
   // Custom cursor position and hover state
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const rafId = useRef<number | null>(null);
   const currentPosition = useRef<Position>({ x: 0, y: 0 });
@@ -86,7 +87,23 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
     if (!targetElement) return;
 
     // Performance optimized mouse move with RAF throttling
-    const updatePosition = (e: MouseEvent): void => {
+    const updatePosition = (e: MouseEvent | PointerEvent): void => {
+      // Always update position during drag, even if pointer capture is active
+      if (isDragging) {
+        currentPosition.current = { x: e.clientX, y: e.clientY };
+
+        // Cancel previous RAF if it exists
+        if (rafId.current) {
+          cancelAnimationFrame(rafId.current);
+        }
+
+        // Schedule update on next frame
+        rafId.current = requestAnimationFrame(() => {
+          setPosition(currentPosition.current);
+        });
+        return;
+      }
+
       // Check if mouse is within the scoped target element
       const eventTarget = e.target as HTMLElement;
       const isInsideTarget = targetElement.contains(eventTarget);
@@ -126,7 +143,11 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
         eventTarget.tagName === 'A' ||
         eventTarget.closest('button') ||
         eventTarget.closest('a') ||
-        eventTarget.classList.contains('clickable')
+        eventTarget.classList.contains('clickable') ||
+        eventTarget.hasAttribute('data-panel-resize-handle-id') ||
+        eventTarget.closest('[data-panel-resize-handle-id]') ||
+        eventTarget.hasAttribute('data-clickable') ||
+        eventTarget.closest('[data-clickable]')
       ) {
         setIsHovering(true);
       } else {
@@ -135,16 +156,40 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
     };
 
     const handleMouseLeave = (): void => {
-      // Hide cursor when leaving the target
-      setPosition({ x: -9999, y: -9999 });
-      setIsHovering(false);
+      // Hide cursor when leaving the target (but only if not dragging)
+      if (!isDragging) {
+        setPosition({ x: -9999, y: -9999 });
+        setIsHovering(false);
+      }
     };
 
+    const handlePointerDown = (e: PointerEvent): void => {
+      const eventTarget = e.target as HTMLElement;
+      if (
+        eventTarget.hasAttribute('data-panel-resize-handle-id') ||
+        eventTarget.closest('[data-panel-resize-handle-id]')
+      ) {
+        setIsDragging(true);
+        setIsHovering(true);
+      }
+    };
+
+    const handlePointerUp = (): void => {
+      setIsDragging(false);
+    };
+
+    // Add listeners to target element
     targetElement.addEventListener('mousemove', updatePosition, { passive: true });
     targetElement.addEventListener('mouseover', handleMouseOver, { passive: true });
     targetElement.addEventListener('mouseleave', handleMouseLeave, {
       passive: true,
     } as AddEventListenerOptions);
+    targetElement.addEventListener('pointerdown', handlePointerDown, { passive: true });
+    targetElement.addEventListener('pointerup', handlePointerUp, { passive: true });
+
+    // Add global listeners for drag tracking (bypasses pointer capture)
+    document.addEventListener('pointermove', updatePosition, { passive: true });
+    document.addEventListener('pointerup', handlePointerUp, { passive: true });
 
     return () => {
       targetElement.removeEventListener('mousemove', updatePosition);
@@ -152,11 +197,15 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
       targetElement.removeEventListener('mouseleave', handleMouseLeave, {
         passive: true,
       } as AddEventListenerOptions);
+      targetElement.removeEventListener('pointerdown', handlePointerDown);
+      targetElement.removeEventListener('pointerup', handlePointerUp);
+      document.removeEventListener('pointermove', updatePosition);
+      document.removeEventListener('pointerup', handlePointerUp);
       if (rafId.current) {
         cancelAnimationFrame(rafId.current);
       }
     };
-  }, [isEnabled, canUseCursor, targetElement]);
+  }, [isEnabled, canUseCursor, targetElement, isDragging]);
 
   const value: CursorContextType = {
     isEnabled: isEnabled && canUseCursor,
@@ -173,23 +222,35 @@ export function CursorProvider({ children, targetElement }: CursorProviderProps)
         <>
           {/* Main cursor ring */}
           <div
-            className={`pointer-events-none fixed left-0 top-0 z-[9999] h-6 w-6 rounded-full border-2 border-primary transition-[border-color,background-color,transform,box-shadow] duration-100 ${
-              isHovering ? 'scale-150 bg-accent/30 shadow-lg shadow-accent/50' : 'bg-primary/20'
+            className={`pointer-events-none fixed left-0 top-0 z-[9999] h-6 w-6 rounded-full border-2 border-primary ${
+              isDragging
+                ? 'bg-primary/40 shadow-xl shadow-primary/50 scale-125'
+                : isHovering
+                  ? 'scale-150 bg-accent/30 shadow-lg shadow-accent/50'
+                  : 'bg-primary/20'
             }`}
             style={{
               left: `${position.x}px`,
               top: `${position.y}px`,
-              transform: isHovering ? 'translate(-50%, -50%) scale(1.5)' : 'translate(-50%, -50%)',
+              transform: isDragging
+                ? 'translate(-50%, -50%) scale(1.25)'
+                : isHovering
+                  ? 'translate(-50%, -50%) scale(1.5)'
+                  : 'translate(-50%, -50%)',
+              transition: isDragging ? 'none' : 'border-color 100ms, background-color 100ms, transform 100ms, box-shadow 100ms',
             }}
             aria-hidden="true"
           />
           {/* Inner dot */}
           <div
-            className="pointer-events-none fixed left-0 top-0 z-[9999] h-2 w-2 rounded-full bg-primary transition-colors duration-100"
+            className={`pointer-events-none fixed left-0 top-0 z-[9999] h-2 w-2 rounded-full bg-primary ${
+              isDragging ? 'scale-150' : ''
+            }`}
             style={{
               left: `${position.x}px`,
               top: `${position.y}px`,
-              transform: 'translate(-50%, -50%)',
+              transform: isDragging ? 'translate(-50%, -50%) scale(1.5)' : 'translate(-50%, -50%)',
+              transition: isDragging ? 'none' : 'transform 100ms',
             }}
             aria-hidden="true"
           />
