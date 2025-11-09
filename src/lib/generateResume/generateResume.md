@@ -61,7 +61,8 @@ const resumeData: ResumeData = {
     {
       institution: 'University',
       degree: 'BS Computer Science',
-      dates: '2016-2020',
+      startDate: '2016-09',
+      endDate: '2020-05',
     },
   ],
 };
@@ -111,7 +112,8 @@ interface Experience {
 interface Education {
   institution: string;
   degree: string;
-  dates: string;
+  startDate: string; // Format: 'YYYY-MM'
+  endDate: string; // Format: 'YYYY-MM' or 'Present'
 }
 ```
 

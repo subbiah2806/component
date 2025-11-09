@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Loader2, AlertTriangle, Inbox } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
 
 interface DataFetchWrapperProps {
   /** Loading state - shows loading spinner when true */
@@ -16,6 +16,10 @@ interface DataFetchWrapperProps {
   loadingMessage?: string;
   /** Optional custom empty message */
   emptyMessage?: string;
+  /** Optional custom empty title */
+  emptyTitle?: string;
+  /** Optional icon to render in empty state (ReactNode) */
+  emptyIcon?: ReactNode;
 }
 
 /**
@@ -39,6 +43,8 @@ export default function DataFetchWrapper({
   className = '',
   loadingMessage = 'Loading...',
   emptyMessage = 'No data available',
+  emptyTitle = 'No Data',
+  emptyIcon,
 }: DataFetchWrapperProps) {
   const wrapperClasses = `w-full ${className}`;
 
@@ -46,7 +52,7 @@ export default function DataFetchWrapper({
   if (isLoading) {
     return (
       <div className={wrapperClasses}>
-        <div className="flex flex-col items-center justify-center py-12">
+        <div className="flex flex-col items-center justify-center py-12 h-full">
           <Loader2 className="mb-4 h-12 w-12 animate-spin text-primary" />
           <p className="text-muted-foreground">{loadingMessage}</p>
         </div>
@@ -82,18 +88,19 @@ export default function DataFetchWrapper({
   if (isEmpty) {
     return (
       <div className={wrapperClasses}>
-        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted py-12">
-          <Inbox
-            className="mb-4 h-12 w-12 text-muted-foreground"
-            strokeWidth={1.5}
-            aria-hidden="true"
-          />
-          <p className="text-muted-foreground">{emptyMessage}</p>
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          {emptyIcon && <div className="mb-4">{emptyIcon}</div>}
+          <h3 className="mb-2 text-lg font-semibold text-foreground">
+            {emptyTitle}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {emptyMessage}
+          </p>
         </div>
       </div>
     );
   }
 
   // Success state - render children
-  return <div className={wrapperClasses}>{children}</div>;
+  return children
 }

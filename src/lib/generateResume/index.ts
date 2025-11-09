@@ -32,35 +32,37 @@ import {
 export type ResumeFormat = 'docx' | 'pdf';
 
 export interface ResumeData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
   github?: string;
   linkedin?: string;
   website?: string;
   visaStatus?: string;
   preferredLocations?: string[];
-  summary: string;
-  skills: Record<string, string[]>;
-  experience: Experience[];
-  education: Education[];
+  openToRemote?: boolean;
+  summary?: string;
+  skills?: Record<string, string[]>;
+  experience?: Experience[];
+  education?: Education[];
 }
 
 export interface Experience {
-  company: string;
-  location: string;
-  position: string;
-  startDate: string;
-  endDate: string;
-  achievements: string[];
+  company?: string;
+  location?: string;
+  position?: string;
+  startDate?: string;
+  endDate?: string;
+  achievements?: string[];
   companyDescription?: string;
 }
 
 export interface Education {
-  institution: string;
-  degree: string;
-  dates: string;
+  institution?: string;
+  degree?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 /**
@@ -93,7 +95,7 @@ function createHeader(data: ResumeData): Paragraph[] {
       spacing: { after: getMarginTwips('h1').bottom },
       children: [
         new TextRun({
-          text: `${data.firstName.toUpperCase()} ${data.lastName.toUpperCase()}`,
+          text: `${(data.firstName || '').toUpperCase()} ${(data.lastName || '').toUpperCase()}`,
           font: ResumeTypography.h1.font,
           size: getFontSizeHalfPoints('h1'),
           bold: ResumeTypography.h1.bold,
@@ -342,6 +344,10 @@ function createExperience(experience: Experience[]): Paragraph[] {
   const rightTabPosition = pointsToTwips(540);
 
   experience.forEach((exp, idx) => {
+    if (!exp.company || !exp.position || !exp.startDate || !exp.endDate) {
+      return; // Skip incomplete experience entries
+    }
+
     const location = exp.location || 'Remote';
     const dateRange = formatDateRange(exp.startDate, exp.endDate);
 
@@ -426,22 +432,24 @@ function createExperience(experience: Experience[]): Paragraph[] {
     }
 
     // Achievements
-    exp.achievements.forEach((achievement) => {
-      paragraphs.push(
-        new Paragraph({
-          alignment: AlignmentType.JUSTIFIED,
-          indent: { left: getMarginTwips('ul').left },
-          spacing: { before: getMarginTwips('li').top, after: getMarginTwips('li').bottom },
-          children: [
-            new TextRun({
-              text: `● ${achievement}`,
-              font: ResumeTypography.normal.font,
-              size: getFontSizeHalfPoints('normal'),
-            }),
-          ],
-        })
-      );
-    });
+    if (exp.achievements && exp.achievements.length > 0) {
+      exp.achievements.forEach((achievement) => {
+        paragraphs.push(
+          new Paragraph({
+            alignment: AlignmentType.JUSTIFIED,
+            indent: { left: getMarginTwips('ul').left },
+            spacing: { before: getMarginTwips('li').top, after: getMarginTwips('li').bottom },
+            children: [
+              new TextRun({
+                text: `● ${achievement}`,
+                font: ResumeTypography.normal.font,
+                size: getFontSizeHalfPoints('normal'),
+              }),
+            ],
+          })
+        );
+      });
+    }
   });
 
   return paragraphs;
@@ -458,6 +466,12 @@ function createEducation(education: Education[]): Paragraph[] {
   const rightTabPosition = pointsToTwips(540);
 
   education.forEach((edu) => {
+    if (!edu.institution || !edu.degree || !edu.startDate || !edu.endDate) {
+      return; // Skip incomplete education entries
+    }
+
+    const dateRange = formatDateRange(edu.startDate, edu.endDate);
+
     paragraphs.push(
       new Paragraph({
         spacing: { after: getMarginTwips('h3').bottom },
@@ -483,7 +497,7 @@ function createEducation(education: Education[]): Paragraph[] {
             text: '\t',
           }),
           new TextRun({
-            text: edu.dates,
+            text: dateRange,
             font: ResumeTypography.h3.font,
             size: getFontSizeHalfPoints('normal'),
             bold: ResumeTypography.h3.bold,
@@ -504,10 +518,10 @@ export async function generateResumeDocx(resumeData: ResumeData): Promise<Blob> 
     // Build all sections
     const sections: Paragraph[] = [
       ...createHeader(resumeData),
-      ...createSummary(resumeData.summary),
-      ...createSkills(resumeData.skills),
-      ...createExperience(resumeData.experience),
-      ...createEducation(resumeData.education),
+      ...(resumeData.summary ? createSummary(resumeData.summary) : []),
+      ...(resumeData.skills ? createSkills(resumeData.skills) : []),
+      ...(resumeData.experience ? createExperience(resumeData.experience) : []),
+      ...(resumeData.education ? createEducation(resumeData.education) : []),
     ];
 
     // Create document
@@ -603,13 +617,15 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
 
       // Build skills section
       const skillsContent: Record<string, unknown>[] = [];
-      for (const [category, skillsList] of Object.entries(resumeData.skills)) {
-        if (skillsList && skillsList.length > 0) {
-          skillsContent.push({
-            text: [{ text: `${category}: `, bold: true }, { text: skillsList.join(', ') }],
-            fontSize: ResumeTypography.normal.fontSize,
-            margin: liMargin,
-          });
+      if (resumeData.skills) {
+        for (const [category, skillsList] of Object.entries(resumeData.skills)) {
+          if (skillsList && skillsList.length > 0) {
+            skillsContent.push({
+              text: [{ text: `${category}: `, bold: true }, { text: skillsList.join(', ') }],
+              fontSize: ResumeTypography.normal.fontSize,
+              margin: liMargin,
+            });
+          }
         }
       }
 
@@ -624,10 +640,14 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
 
       // Build experience section
       const experienceContent: Record<string, unknown>[] = [];
-      resumeData.experience.forEach((exp, index) => {
+      resumeData.experience?.forEach((exp, index) => {
+        if (!exp.company || !exp.position || !exp.startDate || !exp.endDate) {
+          return; // Skip incomplete experience entries
+        }
+
         const location = exp.location || 'Remote';
         const dateRange = formatDateRange(exp.startDate, exp.endDate);
-        const isLastExperience = index === resumeData.experience.length - 1;
+        const isLastExperience = index === (resumeData.experience?.length ?? 0) - 1;
 
         // Company and location
         experienceContent.push({
@@ -670,12 +690,14 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         }
 
         // Achievements
-        for (const achievement of exp.achievements) {
-          expItems.push({
-            text: achievement,
-            fontSize: ResumeTypography.normal.fontSize,
-            alignment: 'justify',
-          });
+        if (exp.achievements && exp.achievements.length > 0) {
+          for (const achievement of exp.achievements) {
+            expItems.push({
+              text: achievement,
+              fontSize: ResumeTypography.normal.fontSize,
+              alignment: 'justify',
+            });
+          }
         }
 
         // Add as unordered list
@@ -689,22 +711,30 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
 
       // Build education section
       const educationContent: Record<string, unknown>[] = [];
-      for (const edu of resumeData.education) {
-        educationContent.push({
-          columns: [
-            {
-              text: [{ text: `${edu.degree}, `, bold: true }, { text: edu.institution }],
-              fontSize: ResumeTypography.normal.fontSize,
-            },
-            {
-              text: edu.dates,
-              bold: true,
-              fontSize: ResumeTypography.normal.fontSize,
-              alignment: 'right',
-            },
-          ],
-          margin: h3Margin,
-        });
+      if (resumeData.education) {
+        for (const edu of resumeData.education) {
+          if (!edu.institution || !edu.degree || !edu.startDate || !edu.endDate) {
+            continue; // Skip incomplete education entries
+          }
+
+          const dateRange = formatDateRange(edu.startDate, edu.endDate);
+
+          educationContent.push({
+            columns: [
+              {
+                text: [{ text: `${edu.degree}, `, bold: true }, { text: edu.institution }],
+                fontSize: ResumeTypography.normal.fontSize,
+              },
+              {
+                text: dateRange,
+                bold: true,
+                fontSize: ResumeTypography.normal.fontSize,
+                alignment: 'right',
+              },
+            ],
+            margin: h3Margin,
+          });
+        }
       }
 
       // Define document structure
@@ -722,7 +752,7 @@ export async function generateResumePdf(resumeData: ResumeData): Promise<Blob> {
         content: [
           // Name
           {
-            text: `${resumeData.firstName.toUpperCase()} ${resumeData.lastName.toUpperCase()}`,
+            text: `${(resumeData.firstName || '').toUpperCase()} ${(resumeData.lastName || '').toUpperCase()}`,
             fontSize: ResumeTypography.h1.fontSize,
             bold: true,
             alignment: 'center',

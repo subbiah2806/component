@@ -12,9 +12,9 @@ import DataFetchWrapper from '@subbiah/reusable/components/DataFetchWrapper';
 
 - **Loading State**: Animated spinner with customizable message
 - **Error State**: Error display with icon and formatted message
-- **Empty State**: Empty inbox UI for no data scenarios
+- **Empty State**: Centered empty UI with optional custom icon, title, and message
 - **Success State**: Renders children when data loads successfully
-- **Customizable Messages**: Override default loading and empty messages
+- **Customizable**: Override loading/empty messages, titles, and optionally provide empty state icon
 
 ## Basic Usage
 
@@ -39,6 +39,8 @@ import DataFetchWrapper from '@subbiah/reusable/components/DataFetchWrapper';
 | `className`      | `string`                  | `''`                  | Additional CSS classes for wrapper                  |
 | `loadingMessage` | `string`                  | `'Loading...'`        | Custom loading message                              |
 | `emptyMessage`   | `string`                  | `'No data available'` | Custom empty state message                          |
+| `emptyTitle`     | `string`                  | `'No Data'`           | Custom empty state title                            |
+| `emptyIcon`      | `ReactNode`               | -                     | Optional icon to render in empty state              |
 
 ## State Priority
 
@@ -65,15 +67,19 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 > Shows spinner during fetch, displays UserList when loaded, shows error box if fetch fails, shows empty inbox if no users
 
-### Example 2: Custom Messages
+### Example 2: Custom Empty State with Icon
 
 ```tsx
+import { ShoppingCart } from 'lucide-react';
+
 <DataFetchWrapper
   isLoading={isLoading}
   error={error}
   isEmpty={!products?.length}
   loadingMessage="Fetching products..."
-  emptyMessage="No products found. Try adjusting your filters."
+  emptyTitle="No Products Found"
+  emptyMessage="Try adjusting your filters."
+  emptyIcon={<ShoppingCart className="h-16 w-16 text-muted-foreground" aria-hidden="true" />}
 >
   <ProductGrid products={products} />
 </DataFetchWrapper>
@@ -81,7 +87,7 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 **Visual:**
 
-> Loading shows "Fetching products...", empty state shows custom filter message
+> Loading shows "Fetching products...", empty state shows shopping cart icon (64px) with "No Products Found" title and custom filter message
 
 ### Example 3: Error Handling
 
@@ -99,14 +105,15 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 > Red error box with alert triangle icon showing "Failed to connect to server"
 
-### Example 4: Empty State
+### Example 4: Empty State Without Icon
 
 ```tsx
 <DataFetchWrapper
   isLoading={false}
   error={null}
   isEmpty={true}
-  emptyMessage="No messages in your inbox"
+  emptyTitle="No Messages"
+  emptyMessage="Your inbox is empty"
 >
   <MessageList />
 </DataFetchWrapper>
@@ -114,7 +121,7 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 **Visual:**
 
-> Dashed border box with inbox icon and "No messages in your inbox" text in muted color
+> Centered empty state with "No Messages" title and "Your inbox is empty" message (no icon)
 
 ### Example 5: With Custom Styling
 
@@ -133,7 +140,28 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 > Wrapper has minimum height of 400px, centers loading/error/empty states vertically
 
-### Example 6: Nested Fetch
+### Example 6: Empty State with Custom Icon
+
+```tsx
+import { Inbox } from 'lucide-react';
+
+<DataFetchWrapper
+  isLoading={isLoading}
+  error={error}
+  isEmpty={!messages?.length}
+  emptyTitle="No Messages"
+  emptyMessage="Your inbox is empty"
+  emptyIcon={<Inbox className="h-16 w-16 text-muted-foreground" aria-hidden="true" />}
+>
+  <MessageList messages={messages} />
+</DataFetchWrapper>
+```
+
+**Visual:**
+
+> Empty state shows inbox icon (64px) with "No Messages" title and "Your inbox is empty" message
+
+### Example 7: Nested Fetch
 
 ```tsx
 <DataFetchWrapper isLoading={usersLoading} error={usersError} isEmpty={!users?.length}>
@@ -162,7 +190,7 @@ const { data, isLoading, error } = useQuery('users', fetchUsers);
 
 ### Empty State
 
-> Dashed border box with muted background, inbox icon (48px) centered with light stroke, empty message in muted color
+> Centered layout with optional custom icon (typically 64px), title in semibold text-foreground (text-lg), empty message below in text-muted-foreground (text-sm)
 
 ### Success State
 
@@ -188,16 +216,21 @@ interface DataFetchWrapperProps {
   className?: string;
   loadingMessage?: string;
   emptyMessage?: string;
+  emptyTitle?: string;
+  emptyIcon?: ReactNode;
 }
 ```
 
 ## Notes
 
 - Full width by default (`w-full`)
-- Uses lucide-react icons (Loader2, AlertTriangle, Inbox)
+- Uses lucide-react icons (Loader2 for loading, AlertTriangle for errors)
 - Loading spinner is 48px (`h-12 w-12`) with `animate-spin`
-- Error box has rounded corners and padding
-- Empty state has 2px dashed border and 48px vertical padding
-- All states use 12px vertical padding (`py-12`)
+- Error state uses bordered alert box with icon (24px) and destructive styling
+- Empty state uses centered layout with 32px padding (`p-8`)
+- Empty state icon is optional - only rendered if `emptyIcon` prop is provided
+- Empty state structure: optional icon, title (text-lg), message (text-sm)
 - Error message supports Error objects, strings, or booleans
+- `emptyIcon` can be any ReactNode (typically a Lucide icon with `h-16 w-16` sizing)
 - Children only render when not loading, no error, and not empty
+- Title and message can be customized for empty state independently
