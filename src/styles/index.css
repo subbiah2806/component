@@ -144,9 +144,10 @@
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
-  /* Scrollbar for professional look - scoped to seekr-app-root */
+  /* Scrollbar for professional look - scoped to #reusables-app-root */
   #reusables-app-root ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
 
   #reusables-app-root ::-webkit-scrollbar-track {
@@ -154,7 +155,36 @@
   }
 
   #reusables-app-root ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-muted-foreground;
+    @apply rounded-full bg-muted-foreground/30;
+  }
+
+  #reusables-app-root ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  /* Global scrollbar styling for all apps using the component library */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: oklch(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(var(--muted-foreground) / 0.3);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--muted-foreground) / 0.5);
+  }
+
+  /* Firefox scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(var(--muted-foreground) / 0.3) oklch(var(--muted));
   }
 }
 
